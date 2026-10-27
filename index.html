@@ -1,220 +1,343 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Himalaya-Play-Social | Boss AI Control Panel</title>
+    <title>Himalaya Play Social</title>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --accent: #00f2fe;
-            --accent-2: #4facfe;
-            --danger: #ff4757;
-            --success: #2ed573;
-            --text-main: #ffffff;
-            --text-sub: #94a3b8;
-            --border: rgba(255, 255, 255, 0.1);
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-color: #f8fafc;
+            --danger-color: #ef4444;
+            --success-color: #22c55e;
+            --warning-color: #f59e0b;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 70px;
+        }
+        header {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        h1 { margin: 0; font-size: 22px; color: var(--accent-color); }
         
-        /* Header */
-        header { background: linear-gradient(135deg, #1a1c29, #0b0f19); padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 1.2rem; font-weight: bold; background: linear-gradient(to right, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .boss-badge { font-size: 0.75rem; background: rgba(255, 71, 87, 0.2); color: var(--danger); padding: 5px 10px; border-radius: 20px; border: 1px solid var(--danger); font-weight: bold; }
+        .container { padding: 15px; max-width: 600px; margin: auto; }
+        
+        /* Search Bar */
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: var(--card-bg);
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
 
-        /* Main Container */
-        .container { flex: 1; padding: 15px; max-width: 600px; margin: 0 auto; width: 100%; padding-bottom: 90px; }
+        /* Cards */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid #334155;
+        }
+        .card h3 { margin-top: 0; color: var(--accent-color); }
 
-        /* Sections */
+        /* Gaming Rooms & Betting UI */
+        .gaming-room {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid var(--warning-color);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        .room-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+        }
+        .prize-pool {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+        .entry-fee {
+            color: var(--warning-color);
+            font-weight: bold;
+        }
+
+        /* Buttons */
+        .btn-action {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .btn-action.active {
+            background: var(--accent-color);
+            color: #0f172a;
+            font-weight: bold;
+        }
+        .btn-play {
+            background: var(--success-color);
+            color: #0f172a;
+            font-weight: bold;
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Multimedia Player */
+        .media-player {
+            width: 100%;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        video, audio { width: 100%; outline: none; }
+
+        /* Ads Banner */
+        .ad-banner {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            color: #000;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        /* Bottom Navigation */
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #1e293b;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #334155;
+            z-index: 1000;
+        }
+        nav button {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 11px;
+            cursor: pointer;
+            text-align: center;
+        }
+        nav button.active { color: var(--accent-color); font-weight: bold; }
+
         .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Cards & UI Elements */
-        .hero-card { background: linear-gradient(135deg, rgba(255, 71, 87, 0.1), rgba(0, 242, 254, 0.05)); border: 1px solid var(--danger); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; }
-        .hero-card h1 { font-size: 1.4rem; margin-bottom: 8px; color: var(--danger); }
-        .hero-card p { font-size: 0.85rem; color: var(--text-sub); }
-
-        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; backdrop-filter: blur(10px); }
-        .card h3 { font-size: 1rem; margin-bottom: 5px; color: var(--text-main); }
-        .card p { font-size: 0.85rem; color: var(--text-sub); }
-
-        /* Boss AI Terminal */
-        .ai-chat-box { background: rgba(0, 0, 0, 0.5); border: 1px solid var(--danger); border-radius: 12px; padding: 12px; margin-top: 10px; }
-        .chat-log { height: 160px; overflow-y: auto; font-size: 0.8rem; margin-bottom: 10px; display: flex; flex-direction: column; gap: 6px; padding-right: 5px; }
-        .msg { padding: 8px 12px; border-radius: 8px; max-width: 90%; line-height: 1.4; }
-        .msg.ai { background: rgba(255, 71, 87, 0.15); color: #ff8787; align-self: flex-start; border-left: 3px solid var(--danger); }
-        .msg.user { background: rgba(0, 242, 254, 0.15); color: var(--accent); align-self: flex-end; border-right: 3px solid var(--accent); }
-        .chat-input-row { display: flex; gap: 8px; }
-        .chat-input-row input { flex: 1; background: var(--card-bg); border: 1px solid var(--border); padding: 8px; border-radius: 6px; color: #fff; font-size: 0.85rem; outline: none; }
-        .chat-input-row button { background: var(--danger); color: #fff; border: none; padding: 0 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-
-        /* User Management List for Boss */
-        .user-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border); font-size: 0.85rem; }
-        .ban-btn { background: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.75rem; font-weight: bold; }
-        .banned-tag { background: rgba(255,71,87,0.2); color: var(--danger); padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; }
-
-        /* Bottom Nav */
-        nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0f19; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 100; backdrop-filter: blur(15px); }
-        .nav-item { background: none; border: none; color: var(--text-sub); font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: 0.2s; }
-        .nav-item.active { color: var(--danger); }
-        .nav-item svg { width: 22px; height: 22px; margin-bottom: 3px; fill: currentColor; }
+        .tab-content.active { display: block; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">🏔️ Himalaya Hub</div>
-        <div class="boss-badge">👑 बॉस मोड एक्टिव</div>
+        <h1>Himalaya Play Social</h1>
+        <p style="margin: 5px 0 0 0; font-size: 12px; color: #94a3b8;">Gaming Rooms & Social Hub</p>
     </header>
 
     <div class="container">
+        <!-- Search Bar -->
+        <input type="text" class="search-box" id="searchInput" placeholder="Search games, rooms, songs, movies..." onkeyup="filterContent()">
+
+        <!-- Ad Banner -->
+        <div class="ad-banner">
+            🚀 Sponsored Ad: Play Tournaments & Win Real Rewards!
+        </div>
 
         <!-- HOME TAB -->
-        <div id="home" class="tab-content active">
-            <div class="hero-card">
-                <h1>नेपाल डेली हब - बॉस कंट्रोल</h1>
-                <p>यहाँ सिर्फ आपका राज चलेगा। आपका पर्सनल AI आपके हर हुक्म पर नजर रखेगा।</p>
+        <div id="homeTab" class="tab-content active">
+            <div class="card searchable-item">
+                <h3>Welcome to Himalaya Play</h3>
+                <p>Join live gaming battle rooms, place entry stakes, win cash prizes, and enjoy entertainment!</p>
+                <div style="display: flex; justify-content: space-around; margin-top: 10px; padding-top: 10px; border-top: 1px solid #334155;">
+                    <button class="btn-action" onclick="toggleLike(this)">❤️ Like (<span class="like-count">150</span>)</button>
+                    <button class="btn-action" onclick="toggleFollow(this)">➕ Follow</button>
+                    <button class="btn-action" onclick="toggleSubscribe(this)">🔔 Subscribe</button>
+                </div>
             </div>
+        </div>
+
+        <!-- GAMING TOURNAMENTS & ROOMS TAB (New Feature) -->
+        <div id="gamingTab" class="tab-content">
+            <div class="card searchable-item">
+                <h3>🎮 Live Esport Battle Rooms</h3>
+                <p style="font-size: 13px; color: #94a3b8;">Choose your game room, pay entry stake, and claim the winning pool!</p>
+                
+                <!-- Room 1: Free Fire / Action Room -->
+                <div class="gaming-room">
+                    <h4>🔥 Free Fire Pro Clash - Room #101</h4>
+                    <div class="room-info">
+                        <span>Entry Fee: <span class="entry-fee">Rs. 50</span></span>
+                        <span>Prize Pool: <span class="prize-pool">Rs. 500</span></span>
+                    </div>
+                    <div class="room-info">
+                        <span>Slots: 8/12 Joined</span>
+                        <span>Map: Bermuda</span>
+                    </div>
+                    <button class="btn-play" onclick="joinRoom('Free Fire Pro Clash #101', 50, 500)">Join Room & Pay Stake</button>
+                </div>
+
+                <!-- Room 2: Ludo King / Strategy Room -->
+                <div class="gaming-room">
+                    <h4>🎲 Ludo King High Stakes - Room #202</h4>
+                    <div class="room-info">
+                        <span>Entry Fee: <span class="entry-fee">Rs. 100</span></span>
+                        <span>Prize Pool: <span class="prize-pool">Rs. 350</span></span>
+                    </div>
+                    <div class="room-info">
+                        <span>Slots: 2/4 Joined</span>
+                        <span>Mode: Quick</span>
+                    </div>
+                    <button class="btn-play" onclick="joinRoom('Ludo King #202', 100, 350)">Join Room & Pay Stake</button>
+                </div>
+
+                <!-- Room 3: 8 Ball Pool -->
+                <div class="gaming-room">
+                    <h4>🎱 8 Ball Pool Tournament - Room #303</h4>
+                    <div class="room-info">
+                        <span>Entry Fee: <span class="entry-fee">Rs. 25</span></span>
+                        <span>Prize Pool: <span class="prize-pool">Rs. 200</span></span>
+                    </div>
+                    <div class="room-info">
+                        <span>Slots: 5/8 Joined</span>
+                        <span>Table: 9 Ball</span>
+                    </div>
+                    <button class="btn-play" onclick="joinRoom('8 Ball Pool #303', 25, 200)">Join Room & Pay Stake</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MULTIMEDIA TAB (Songs & Movies) -->
+        <div id="mediaTab" class="tab-content">
+            <div class="card searchable-item">
+                <h3>Himalayan Folk Song - Audio</h3>
+                <audio controls>
+                    <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                    Your browser does not support audio.
+                </audio>
+            </div>
+
+            <div class="card searchable-item">
+                <h3>Action Movie Trailer</h3>
+                <div class="media-player">
+                    <video controls>
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        Your browser does not support video.
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOSS AI TAB -->
+        <div id="aiTab" class="tab-content">
             <div class="card">
-                <h3>⚡ AI कमांड स्टेटस</h3>
-                <p>बॉस AI पूरी तरह एक्टिव है। किसी भी यूजर को बैन करने या ऐप की देखरेख के लिए 'बॉस AI' टैब पर जाएं।</p>
+                <h3>👑 Supreme Boss AI Guard</h3>
+                <p>AI is monitoring chat, gaming fair-play, and transaction security.</p>
+                <input type="text" class="search-box" placeholder="Type AI command..." style="margin-top: 10px;">
+                <button class="btn-action active" style="width: 100%; padding: 10px;" onclick="alert('AI Command Processed Successfully!')">Execute Command</button>
             </div>
         </div>
 
-        <!-- BOSS AI TERMINAL TAB -->
-        <div id="boss-ai" class="tab-content">
-            <h2 style="margin-bottom: 8px; font-size: 1.2rem; color: var(--danger);">👑 आपका पर्सनल बॉस AI</h2>
-            <p style="font-size: 0.8rem; color: var(--text-sub); margin-bottom: 12px;">इसे बोलिए — "इस यूजर को बैन कर दो" या "चेतावनी दो", यह तुरंत एक्शन लेगा।</p>
-            
-            <div class="ai-chat-box">
-                <div class="chat-log" id="chatLog">
-                    <div class="msg ai">जय हो बॉस! मैं आपका सुप्रीम AI हूँ। बताइए किस यूजर की क्लास लगानी है या किसे बैन करना है?</div>
+        <!-- COMMUNITY TAB -->
+        <div id="communityTab" class="tab-content">
+            <div class="card searchable-item">
+                <h3>Public Community Chat</h3>
+                <p>Chat with fellow gamers and share victory screenshots.</p>
+                <div style="margin-top: 10px;">
+                    <input type="text" class="search-box" placeholder="Say something to community...">
+                    <button class="btn-action active" style="width: 100%; padding: 8px;" onclick="alert('Message sent to community!')">Send Message</button>
                 </div>
-                <div class="chat-input-row">
-                    <input type="text" id="userInput" placeholder="जैसे: यूजर राहुल को बैन कर दो..." onkeypress="handleKeyPress(event)">
-                    <button onclick="sendToBossAI()">हुक्म दें</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- USER MANAGEMENT & BAN PANEL -->
-        <div id="users" class="tab-content">
-            <h2 style="margin-bottom: 15px; font-size: 1.2rem;">🛡️ यूजर कंट्रोल & बैन लिस्ट</h2>
-            
-            <div class="user-row">
-                <div>
-                    <strong>User_Alpha99</strong><br>
-                    <span style="font-size:0.75rem; color:var(--text-sub);">गतिविधि: नॉर्मल</span>
-                </div>
-                <button class="ban-btn" onclick="banUser(this, 'User_Alpha99')">बैन करें</button>
-            </div>
-
-            <div class="user-row">
-                <div>
-                    <strong>Hacker_Xyz</strong><br>
-                    <span style="font-size:0.75rem; color:var(--text-sub);">गतिविधि: छेड़छाड़ की कोशिश</span>
-                </div>
-                <button class="ban-btn" onclick="banUser(this, 'Hacker_Xyz')">बैन करें</button>
-            </div>
-
-            <div class="user-row">
-                <div>
-                    <strong>Nepal_Boy</strong><br>
-                    <span style="font-size:0.75rem; color:var(--text-sub);">गतिविधि: गेमिंग टूर्नामेंट</span>
-                </div>
-                <button class="ban-btn" onclick="banUser(this, 'Nepal_Boy')">बैन करें</button>
-            </div>
-        </div>
-
-        <!-- NEWS / SOCIAL TABS -->
-        <div id="social" class="tab-content">
-            <h2 style="margin-bottom: 15px; font-size: 1.2rem;">💬 कम्युनिटी फीड</h2>
-            <div class="card">
-                <h3>पब्लिक चैट</h3>
-                <p>यहाँ आम लोग चैट करेंगे, जिनपर आम AI गार्ड नजर रखेगा और बदतमीजी करने पर चेतावनी देगा।</p>
             </div>
         </div>
     </div>
 
     <!-- Bottom Navigation Bar -->
     <nav>
-        <button class="nav-item active" onclick="switchTab('home')">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            होम
-        </button>
-        <button class="nav-item" onclick="switchTab('boss-ai')" style="color: var(--danger);">
-            <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 10h2v4h-2zm0 6h2v2h-2z"/></svg>
-            बॉस AI
-        </button>
-        <button class="nav-item" onclick="switchTab('users')">
-            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-            यूजर कंट्रोल
-        </button>
-        <button class="nav-item" onclick="switchTab('social')">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
-            कम्युनिटी
-        </button>
+        <button onclick="switchTab('homeTab', event)" class="active">🏠 Home</button>
+        <button onclick="switchTab('gamingTab', event)">🎮 Gaming</button>
+        <button onclick="switchTab('mediaTab', event)">🎵 Media</button>
+        <button onclick="switchTab('aiTab', event)">🤖 AI</button>
+        <button onclick="switchTab('communityTab', event)">💬 Chat</button>
     </nav>
 
     <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
+        // Tab Switching
+        function switchTab(tabId, evt) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            evt.currentTarget.classList.add('action') || evt.currentTarget.classList.add('active');
         }
 
-        function sendToBossAI() {
-            const input = document.getElementById('userInput');
-            const chatLog = document.getElementById('chatLog');
-            if(!input.value.trim()) return;
-
-            // User (Boss) Message
-            const userMsg = document.createElement('div');
-            userMsg.className = 'msg user';
-            userMsg.innerText = "हुक्म: " + input.value;
-            chatLog.appendChild(userMsg);
-
-            let query = input.value.toLowerCase();
-            input.value = '';
-            chatLog.scrollTop = chatLog.scrollHeight;
-
-            // Boss AI Action Simulation
-            setTimeout(() => {
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'msg ai';
-                
-                if(query.includes('बैन') || query.includes('ban') || query.includes('हटाओ')) {
-                    aiMsg.innerText = "⚡ बॉस का हुक्म सर आँखों पर! टारगेट यूजर की आईडी हमेशा के लिए ब्लॉक कर दी गई है। ऐप पूरी तरह सुरक्षित है।";
-                } else if(query.includes('चेतावनी') || query.includes('warning')) {
-                    aiMsg.innerText = "🚨 AI एक्शन: सभी हुड़दंगियों को चेतावनी भेज दी गई है। दोबारा गलती करने पर सीधे बैन किया जाएगा।";
-                } else {
-                    aiMsg.innerText = "समझ गया बॉस! आपके इस निर्देश पर मेरा कड़ा पहरा रहेगा। और बताइए क्या करना है?";
-                }
-                
-                chatLog.appendChild(aiMsg);
-                chatLog.scrollTop = chatLog.scrollHeight;
-            }, 600);
+        // Search Filter
+        function filterContent() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.querySelectorAll('.searchable-item');
+            cards.forEach(card => {
+                let text = card.innerText.toLowerCase();
+                card.style.display = text.includes(input) ? '' : 'none';
+            });
         }
 
-        function handleKeyPress(e) {
-            if(e.key === 'Enter') {
-                sendToBossAI();
+        // Gaming Room Join & Stake Simulation
+        function joinRoom(roomName, fee, prize) {
+            let confirmJoin = confirm(`Do you want to join "${roomName}"?\nEntry Fee: Rs. ${fee}\nWin Prize Pool: Rs. ${prize}`);
+            if(confirmJoin) {
+                alert(`Successfully joined ${roomName}!\nRs. ${fee} deducted from wallet. Good luck for the win! 🏆`);
             }
         }
 
-        function banUser(buttonElement, username) {
-            alert("🚨 बॉस AI एक्शन: यूजर [" + username + "] को सफलतापूर्वक बैन कर दिया गया है!");
-            let parentRow = buttonElement.parentElement;
-            parentRow.innerHTML = `<strong>${username}</strong> <span class="banned-tag">❌ बैन किया गया</span>`;
+        // Engagement Toggles
+        function toggleLike(btn) {
+            let countSpan = btn.querySelector('.like-count');
+            let count = parseInt(countSpan.innerText);
+            if(btn.classList.contains('active')) {
+                btn.classList.remove('active');
+                countSpan.innerText = count - 1;
+            } else {
+                btn.classList.add('active');
+                countSpan.innerText = count + 1;
+            }
+        }
+        function toggleFollow(btn) {
+            btn.innerText = btn.innerText.includes('Following') ? '➕ Follow' : '✓ Following';
+            btn.classList.toggle('active');
+        }
+        function toggleSubscribe(btn) {
+            btn.innerText = btn.innerText.includes('Subscribed') ? '🔔 Subscribe' : '✓ Subscribed';
+            btn.classList.toggle('active');
         }
     </script>
 </body>
-  </html>
+</html>
