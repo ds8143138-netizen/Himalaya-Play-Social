@@ -14,12 +14,13 @@
             --success-color: #22c55e;
             --warning-color: #f59e0b;
         }
+        * { box-sizing: border-box; }
         body {
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            padding-bottom: 70px;
+            padding-bottom: 80px;
         }
         header {
             background: linear-gradient(135deg, #1e293b, #0f172a);
@@ -29,8 +30,12 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        h1 { margin: 0; font-size: 22px; color: var(--accent-color); }
+        h1 { margin: 0; font-size: 20px; color: var(--accent-color); text-align: left; }
+        .user-status { font-size: 12px; background: #334155; padding: 5px 10px; border-radius: 20px; cursor: pointer; }
         
         .container { padding: 15px; max-width: 600px; margin: auto; }
         
@@ -44,7 +49,6 @@
             color: white;
             font-size: 16px;
             margin-bottom: 15px;
-            box-sizing: border-box;
         }
 
         /* Cards */
@@ -56,7 +60,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.3);
             border: 1px solid #334155;
         }
-        .card h3 { margin-top: 0; color: var(--accent-color); }
+        .card h3 { margin-top: 0; color: var(--accent-color); font-size: 18px; }
 
         /* Gaming Rooms & Betting UI */
         .gaming-room {
@@ -73,14 +77,8 @@
             margin-bottom: 8px;
             color: #cbd5e1;
         }
-        .prize-pool {
-            color: var(--success-color);
-            font-weight: bold;
-        }
-        .entry-fee {
-            color: var(--warning-color);
-            font-weight: bold;
-        }
+        .prize-pool { color: var(--success-color); font-weight: bold; }
+        .entry-fee { color: var(--warning-color); font-weight: bold; }
 
         /* Buttons */
         .btn-action {
@@ -132,11 +130,36 @@
             font-size: 14px;
         }
 
+        /* Modal Overlay for Login */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--accent-color);
+            text-align: center;
+        }
+        .login-btn {
+            width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 15px;
+        }
+        .btn-google { background: #db4437; color: white; }
+        .btn-facebook { background: #1877f2; color: white; }
+        .btn-phone { background: var(--success-color); color: #0f172a; }
+
         /* Bottom Navigation */
         nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
+            bottom: 0; left: 0;
             width: 100%;
             background: #1e293b;
             display: flex;
@@ -162,39 +185,59 @@
 <body>
 
     <header>
-        <h1>Himalaya Play Social</h1>
-        <p style="margin: 5px 0 0 0; font-size: 12px; color: #94a3b8;">Gaming Rooms & Social Hub</p>
+        <div>
+            <h1>Himalaya Play</h1>
+            <p style="margin: 2px 0 0 0; font-size: 11px; color: #94a3b8;">Social & E-Sports Hub</p>
+        </div>
+        <div class="user-status" id="userProfileBtn" onclick="openLoginModal()">👤 Login / Signup</div>
     </header>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h3>Join Himalaya Play</h3>
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Choose login method to play & earn:</p>
+            <button class="login-btn btn-google" onclick="loginUser('Google Account')">🔴 Continue with Google</button>
+            <button class="login-btn btn-facebook" onclick="loginUser('Facebook Account')">🔵 Continue with Facebook</button>
+            <button class="login-btn btn-phone" onclick="loginUser('Mobile Number')">📱 Continue with Phone OTP</button>
+            <button class="btn-action" style="margin-top: 15px; width: 100%;" onclick="closeLoginModal()">Cancel</button>
+        </div>
+    </div>
 
     <div class="container">
         <!-- Search Bar -->
-        <input type="text" class="search-box" id="searchInput" placeholder="Search games, rooms, songs, movies..." onkeyup="filterContent()">
+        <input type="text" class="search-box" id="searchInput" placeholder="Search games, songs, news, movies..." onkeyup="filterContent()">
 
         <!-- Ad Banner -->
         <div class="ad-banner">
-            🚀 Sponsored Ad: Play Tournaments & Win Real Rewards!
+            🚀 Sponsored Ad: Play Tournaments & Win Real Cash Daily!
         </div>
 
         <!-- HOME TAB -->
         <div id="homeTab" class="tab-content active">
             <div class="card searchable-item">
-                <h3>Welcome to Himalaya Play</h3>
-                <p>Join live gaming battle rooms, place entry stakes, win cash prizes, and enjoy entertainment!</p>
-                <div style="display: flex; justify-content: space-around; margin-top: 10px; padding-top: 10px; border-top: 1px solid #334155;">
-                    <button class="btn-action" onclick="toggleLike(this)">❤️ Like (<span class="like-count">150</span>)</button>
+                <h3>Welcome to Himalaya Play Hub</h3>
+                <p>Your ultimate destination for social networking, local news, multimedia streaming, and competitive e-sports gaming battles.</p>
+                <div style="display: flex; justify-content: space-around; margin-top: 12px; padding-top: 10px; border-top: 1px solid #334155;">
+                    <button class="btn-action" onclick="toggleLike(this)">❤️ Like (<span class="like-count">342</span>)</button>
                     <button class="btn-action" onclick="toggleFollow(this)">➕ Follow</button>
                     <button class="btn-action" onclick="toggleSubscribe(this)">🔔 Subscribe</button>
                 </div>
             </div>
+
+            <div class="card searchable-item">
+                <h3>📰 Latest Nepal & World News</h3>
+                <p style="font-size: 14px; color: #cbd5e1;">Stay updated with live community stories, cultural highlights, and daily updates right inside your app feed.</p>
+                <span style="font-size: 12px; color: var(--accent-color);">Published 2 hours ago • Read time: 3 mins</span>
+            </div>
         </div>
 
-        <!-- GAMING TOURNAMENTS & ROOMS TAB (New Feature) -->
+        <!-- GAMING TOURNAMENTS & ROOMS TAB -->
         <div id="gamingTab" class="tab-content">
             <div class="card searchable-item">
                 <h3>🎮 Live Esport Battle Rooms</h3>
-                <p style="font-size: 13px; color: #94a3b8;">Choose your game room, pay entry stake, and claim the winning pool!</p>
+                <p style="font-size: 13px; color: #94a3b8;">Select your room, pay entry stake, compete, and claim winning prize pool!</p>
                 
-                <!-- Room 1: Free Fire / Action Room -->
                 <div class="gaming-room">
                     <h4>🔥 Free Fire Pro Clash - Room #101</h4>
                     <div class="room-info">
@@ -208,7 +251,6 @@
                     <button class="btn-play" onclick="joinRoom('Free Fire Pro Clash #101', 50, 500)">Join Room & Pay Stake</button>
                 </div>
 
-                <!-- Room 2: Ludo King / Strategy Room -->
                 <div class="gaming-room">
                     <h4>🎲 Ludo King High Stakes - Room #202</h4>
                     <div class="room-info">
@@ -222,7 +264,6 @@
                     <button class="btn-play" onclick="joinRoom('Ludo King #202', 100, 350)">Join Room & Pay Stake</button>
                 </div>
 
-                <!-- Room 3: 8 Ball Pool -->
                 <div class="gaming-room">
                     <h4>🎱 8 Ball Pool Tournament - Room #303</h4>
                     <div class="room-info">
@@ -241,19 +282,19 @@
         <!-- MULTIMEDIA TAB (Songs & Movies) -->
         <div id="mediaTab" class="tab-content">
             <div class="card searchable-item">
-                <h3>Himalayan Folk Song - Audio</h3>
+                <h3>🎵 Himalayan Folk Song - Audio Player</h3>
                 <audio controls>
                     <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
-                    Your browser does not support audio.
+                    Your browser does not support audio playback.
                 </audio>
             </div>
 
             <div class="card searchable-item">
-                <h3>Action Movie Trailer</h3>
+                <h3>🎬 Action Movie Trailer - Video Stream</h3>
                 <div class="media-player">
                     <video controls>
                         <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                        Your browser does not support video.
+                        Your browser does not support video playback.
                     </video>
                 </div>
             </div>
@@ -263,20 +304,24 @@
         <div id="aiTab" class="tab-content">
             <div class="card">
                 <h3>👑 Supreme Boss AI Guard</h3>
-                <p>AI is monitoring chat, gaming fair-play, and transaction security.</p>
-                <input type="text" class="search-box" placeholder="Type AI command..." style="margin-top: 10px;">
-                <button class="btn-action active" style="width: 100%; padding: 10px;" onclick="alert('AI Command Processed Successfully!')">Execute Command</button>
+                <p>AI automated moderation system managing fair-play, anti-cheat, and transaction verification.</p>
+                <input type="text" class="search-box" placeholder="Ask AI moderator or report issue..." style="margin-top: 10px;">
+                <button class="btn-action active" style="width: 100%; padding: 10px;" onclick="alert('Boss AI Guard: System secure, all nodes operational!')">Execute AI Command</button>
             </div>
         </div>
 
-        <!-- COMMUNITY TAB -->
+        <!-- COMMUNITY CHAT TAB -->
         <div id="communityTab" class="tab-content">
             <div class="card searchable-item">
-                <h3>Public Community Chat</h3>
-                <p>Chat with fellow gamers and share victory screenshots.</p>
+                <h3>💬 Global Community Chat</h3>
+                <p>Connect with players, discuss strategies, and share winning screenshots.</p>
                 <div style="margin-top: 10px;">
-                    <input type="text" class="search-box" placeholder="Say something to community...">
-                    <button class="btn-action active" style="width: 100%; padding: 8px;" onclick="alert('Message sent to community!')">Send Message</button>
+                    <input type="text" class="search-box" id="chatInput" placeholder="Type message to community...">
+                    <button class="btn-action active" style="width: 100%; padding: 8px;" onclick="sendCommunityMessage()">Send Message</button>
+                </div>
+                <div id="chatMessages" style="margin-top: 12px; font-size: 13px; color: #cbd5e1; max-height: 150px; overflow-y: auto;">
+                    <p style="margin: 5px 0;"><b>GamerrX:</b> Won room #101! GG everyone.</p>
+                    <p style="margin: 5px 0;"><b>HimalayaBoss:</b> Welcome to tournament season!</p>
                 </div>
             </div>
         </div>
@@ -292,12 +337,27 @@
     </nav>
 
     <script>
+        let currentUser = null;
+
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+        function loginUser(method) {
+            currentUser = method;
+            document.getElementById('userProfileBtn').innerText = '✅ ' + method.split(' ')[0];
+            closeLoginModal();
+            alert('Successfully logged in via ' + method + '!');
+        }
+
         // Tab Switching
         function switchTab(tabId, evt) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            evt.currentTarget.classList.add('action') || evt.currentTarget.classList.add('active');
+            evt.currentTarget.classList.add('active');
         }
 
         // Search Filter
@@ -310,12 +370,34 @@
             });
         }
 
-        // Gaming Room Join & Stake Simulation
+        // Gaming Room Join
         function joinRoom(roomName, fee, prize) {
-            let confirmJoin = confirm(`Do you want to join "${roomName}"?\nEntry Fee: Rs. ${fee}\nWin Prize Pool: Rs. ${prize}`);
-            if(confirmJoin) {
-                alert(`Successfully joined ${roomName}!\nRs. ${fee} deducted from wallet. Good luck for the win! 🏆`);
+            if(!currentUser) {
+                alert('Please login first using Google, Facebook or Phone OTP to join tournament rooms!');
+                openLoginModal();
+                return;
             }
+            let confirmJoin = confirm(`Join "${roomName}"?\nEntry Stake: Rs. ${fee}\nWin Prize Pool: Rs. ${prize}`);
+            if(confirmJoin) {
+                alert(`Successfully joined ${roomName}!\nRs. ${fee} deducted from wallet. Good luck! 🏆`);
+            }
+        }
+
+        // Community Chat
+        function sendCommunityMessage() {
+            let input = document.getElementById('chatInput');
+            if(input.value.trim() === '') return;
+            if(!currentUser) {
+                alert('Please login first to chat in the community!');
+                openLoginModal();
+                return;
+            }
+            let chatBox = document.getElementById('chatMessages');
+            let p = document.createElement('p');
+            p.style.margin = '5px 0';
+            p.innerHTML = `<b>You:</b> ${input.value}`;
+            chatBox.prepend(p);
+            input.value = '';
         }
 
         // Engagement Toggles
