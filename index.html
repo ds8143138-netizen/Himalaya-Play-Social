@@ -1,424 +1,293 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Himalaya Play Social</title>
+    <title>Himalaya Play - Super App</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --text-color: #f8fafc;
-            --danger-color: #ef4444;
-            --success-color: #22c55e;
-            --warning-color: #f59e0b;
+            --bg-color: #0d0f18;
+            --card-bg: #161b28;
+            --accent-color: #00f2fe;
+            --secondary-accent: #4facfe;
+            --text-color: #ffffff;
+            --text-muted: #8a99ad;
+            --danger: #ff4757;
         }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding-bottom: 80px;
-        }
-        header {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            padding: 15px;
-            text-align: center;
-            border-bottom: 2px solid var(--accent-color);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        h1 { margin: 0; font-size: 20px; color: var(--accent-color); text-align: left; }
-        .user-status { font-size: 12px; background: #334155; padding: 5px 10px; border-radius: 20px; cursor: pointer; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        .container { padding: 15px; max-width: 600px; margin: auto; }
+        /* Top Header */
+        header { background: var(--card-bg); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222c42; }
+        .logo { font-size: 20px; font-weight: bold; background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .wallet-badge { background: #1f293d; padding: 6px 12px; border-radius: 20px; font-size: 13px; color: var(--accent-color); border: 1px solid rgba(0,242,254,0.3); }
+
+        /* Navigation Bar */
+        nav { display: flex; background: var(--card-bg); overflow-x: auto; border-bottom: 1px solid #222c42; white-space: nowrap; }
+        nav button { background: none; border: none; color: var(--text-muted); padding: 12px 14px; font-size: 13px; cursor: pointer; transition: 0.3s; }
+        nav button.active { color: var(--accent-color); border-bottom: 2px solid var(--accent-color); }
+
+        /* Main Content Area */
+        .content { flex: 1; overflow-y: auto; padding: 15px; position: relative; }
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Cards & Grids */
+        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #222c42; }
+        .btn { background: linear-gradient(45deg, var(--accent-color), var(--secondary-accent)); color: #000; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         
-        /* Search Bar */
-        .search-box {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #475569;
-            background: var(--card-bg);
-            color: white;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
+        /* Anime Welcome Modal */
+        #animeWelcomeModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,7,12,0.95); z-index: 1200; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; }
+        .anime-grid { display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; justify-content: center; }
+        .anime-card { background: #1f293d; border: 2px solid #334155; border-radius: 12px; padding: 15px; width: 100px; cursor: pointer; transition: 0.3s; }
+        .anime-card:hover { border-color: var(--accent-color); transform: translateY(-5px); }
+        .anime-card img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; }
 
-        /* Cards */
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            border: 1px solid #334155;
-        }
-        .card h3 { margin-top: 0; color: var(--accent-color); font-size: 18px; }
+        /* Chat / AI Screen */
+        .chat-box { display: flex; flex-direction: column; height: 100%; }
+        .chat-messages { flex: 1; overflow-y: auto; padding-bottom: 10px; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px 14px; border-radius: 10px; max-width: 80%; font-size: 14px; }
+        .msg.user { background: #1f293d; align-self: flex-end; color: #fff; }
+        .msg.ai { background: #222c42; align-self: flex-start; color: var(--accent-color); }
+        .chat-input-area { display: flex; gap: 10px; margin-top: 10px; }
+        .chat-input-area input { flex: 1; background: var(--card-bg); border: 1px solid #222c42; padding: 12px; border-radius: 8px; color: #fff; }
 
-        /* Gaming Rooms & Betting UI */
-        .gaming-room {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 1px solid var(--warning-color);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 12px;
-        }
-        .room-info {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            margin-bottom: 8px;
-            color: #cbd5e1;
-        }
-        .prize-pool { color: var(--success-color); font-weight: bold; }
-        .entry-fee { color: var(--warning-color); font-weight: bold; }
+        /* Boss Admin Panel Modal */
+        #bossPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,7,12,0.95); z-index: 1000; padding: 20px; overflow-y: auto; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--danger); padding-bottom: 10px; }
+        .admin-header h2 { color: var(--danger); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group input { width: 100%; background: #1f293d; border: 1px solid #334155; padding: 10px; border-radius: 6px; color: #fff; }
 
-        /* Buttons */
-        .btn-action {
-            background: #334155;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-        .btn-action.active {
-            background: var(--accent-color);
-            color: #0f172a;
-            font-weight: bold;
-        }
-        .btn-play {
-            background: var(--success-color);
-            color: #0f172a;
-            font-weight: bold;
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Multimedia Player */
-        .media-player {
-            width: 100%;
-            background: #000;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 10px;
-        }
-        video, audio { width: 100%; outline: none; }
-
-        /* Ads Banner */
-        .ad-banner {
-            background: linear-gradient(90deg, #f59e0b, #d97706);
-            color: #000;
-            text-align: center;
-            padding: 10px;
-            font-weight: bold;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-size: 14px;
-        }
-
-        /* Modal Overlay for Login */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            border: 1px solid var(--accent-color);
-            text-align: center;
-        }
-        .login-btn {
-            width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 15px;
-        }
-        .btn-google { background: #db4437; color: white; }
-        .btn-facebook { background: #1877f2; color: white; }
-        .btn-phone { background: var(--success-color); color: #0f172a; }
-
-        /* Bottom Navigation */
-        nav {
-            position: fixed;
-            bottom: 0; left: 0;
-            width: 100%;
-            background: #1e293b;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            border-top: 1px solid #334155;
-            z-index: 1000;
-        }
-        nav button {
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 11px;
-            cursor: pointer;
-            text-align: center;
-        }
-        nav button.active { color: var(--accent-color); font-weight: bold; }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
+        /* Password Prompt Modal */
+        #passwordModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1100; justify-content: center; align-items: center; }
+        .modal-box { background: var(--card-bg); padding: 25px; border-radius: 12px; width: 90%; max-width: 350px; border: 1px solid var(--accent-color); text-align: center; }
+        .modal-box input { width: 100%; padding: 10px; margin: 15px 0; background: #0d0f18; border: 1px solid #334155; color: #fff; border-radius: 6px; text-align: center; font-size: 16px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <div>
-            <h1>Himalaya Play</h1>
-            <p style="margin: 2px 0 0 0; font-size: 11px; color: #94a3b8;">Social & E-Sports Hub</p>
+    <!-- Anime Character Welcome Selector Screen -->
+    <div id="animeWelcomeModal">
+        <h2 style="color: var(--accent-color); margin-bottom: 5px;">Choose Your Anime Companion</h2>
+        <p style="color: var(--text-muted); font-size: 13px;">अपना पसंदीदा एनीमे कैरेक्टर चुनें जो आपका स्वागत करेगा:</p>
+        <div class="anime-grid">
+            <div class="anime-card" onclick="selectAnime('Naruto Uzumaki', 'Dattebayo! Welcome to Himalaya Play!')">
+                <img src="https://i.pinimg.com/736x/82/3e/21/823e218556ba75097f4c54b525852f86.jpg" alt="Naruto">
+                <div style="font-size: 12px; font-weight: bold;">Naruto</div>
+            </div>
+            <div class="anime-card" onclick="selectAnime('Goku', 'Heya! Ready for some epic gaming and editing?')">
+                <img src="https://i.pinimg.com/736x/3a/4d/9b/3a4d9b30c1840003b5da3b57f07a7e17.jpg" alt="Goku">
+                <div style="font-size: 12px; font-weight: bold;">Goku</div>
+            </div>
+            <div class="anime-card" onclick="selectAnime('Luffy', 'Yo! King of Pirates welcomes you!')">
+                <img src="https://i.pinimg.com/736x/2b/9a/e7/2b9ae7e0255df990cb80084f74d0e656.jpg" alt="Luffy">
+                <div style="font-size: 12px; font-weight: bold;">Luffy</div>
+            </div>
+            <div class="anime-card" onclick="selectAnime('Gojo Satoru', 'Yo. Let’s make this app limitless.')">
+                <img src="https://i.pinimg.com/736x/55/03/4d/55034d67383c260270a316c0211d0447.jpg" alt="Gojo">
+                <div style="font-size: 12px; font-weight: bold;">Gojo</div>
+            </div>
         </div>
-        <div class="user-status" id="userProfileBtn" onclick="openLoginModal()">👤 Login / Signup</div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo" id="appTitle">Himalaya Play</div>
+        <div class="wallet-badge">eSewa/Khalti: रु 1,500</div>
     </header>
 
-    <!-- Login Modal -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <h3>Join Himalaya Play</h3>
-            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Choose login method to play & earn:</p>
-            <button class="login-btn btn-google" onclick="loginUser('Google Account')">🔴 Continue with Google</button>
-            <button class="login-btn btn-facebook" onclick="loginUser('Facebook Account')">🔵 Continue with Facebook</button>
-            <button class="login-btn btn-phone" onclick="loginUser('Mobile Number')">📱 Continue with Phone OTP</button>
-            <button class="btn-action" style="margin-top: 15px; width: 100%;" onclick="closeLoginModal()">Cancel</button>
-        </div>
-    </div>
-
-    <div class="container">
-        <!-- Search Bar -->
-        <input type="text" class="search-box" id="searchInput" placeholder="Search games, songs, news, movies..." onkeyup="filterContent()">
-
-        <!-- Ad Banner -->
-        <div class="ad-banner">
-            🚀 Sponsored Ad: Play Tournaments & Win Real Cash Daily!
-        </div>
-
-        <!-- HOME TAB -->
-        <div id="homeTab" class="tab-content active">
-            <div class="card searchable-item">
-                <h3>Welcome to Himalaya Play Hub</h3>
-                <p>Your ultimate destination for social networking, local news, multimedia streaming, and competitive e-sports gaming battles.</p>
-                <div style="display: flex; justify-content: space-around; margin-top: 12px; padding-top: 10px; border-top: 1px solid #334155;">
-                    <button class="btn-action" onclick="toggleLike(this)">❤️ Like (<span class="like-count">342</span>)</button>
-                    <button class="btn-action" onclick="toggleFollow(this)">➕ Follow</button>
-                    <button class="btn-action" onclick="toggleSubscribe(this)">🔔 Subscribe</button>
-                </div>
-            </div>
-
-            <div class="card searchable-item">
-                <h3>📰 Latest Nepal & World News</h3>
-                <p style="font-size: 14px; color: #cbd5e1;">Stay updated with live community stories, cultural highlights, and daily updates right inside your app feed.</p>
-                <span style="font-size: 12px; color: var(--accent-color);">Published 2 hours ago • Read time: 3 mins</span>
-            </div>
-        </div>
-
-        <!-- GAMING TOURNAMENTS & ROOMS TAB -->
-        <div id="gamingTab" class="tab-content">
-            <div class="card searchable-item">
-                <h3>🎮 Live Esport Battle Rooms</h3>
-                <p style="font-size: 13px; color: #94a3b8;">Select your room, pay entry stake, compete, and claim winning prize pool!</p>
-                
-                <div class="gaming-room">
-                    <h4>🔥 Free Fire Pro Clash - Room #101</h4>
-                    <div class="room-info">
-                        <span>Entry Fee: <span class="entry-fee">Rs. 50</span></span>
-                        <span>Prize Pool: <span class="prize-pool">Rs. 500</span></span>
-                    </div>
-                    <div class="room-info">
-                        <span>Slots: 8/12 Joined</span>
-                        <span>Map: Bermuda</span>
-                    </div>
-                    <button class="btn-play" onclick="joinRoom('Free Fire Pro Clash #101', 50, 500)">Join Room & Pay Stake</button>
-                </div>
-
-                <div class="gaming-room">
-                    <h4>🎲 Ludo King High Stakes - Room #202</h4>
-                    <div class="room-info">
-                        <span>Entry Fee: <span class="entry-fee">Rs. 100</span></span>
-                        <span>Prize Pool: <span class="prize-pool">Rs. 350</span></span>
-                    </div>
-                    <div class="room-info">
-                        <span>Slots: 2/4 Joined</span>
-                        <span>Mode: Quick</span>
-                    </div>
-                    <button class="btn-play" onclick="joinRoom('Ludo King #202', 100, 350)">Join Room & Pay Stake</button>
-                </div>
-
-                <div class="gaming-room">
-                    <h4>🎱 8 Ball Pool Tournament - Room #303</h4>
-                    <div class="room-info">
-                        <span>Entry Fee: <span class="entry-fee">Rs. 25</span></span>
-                        <span>Prize Pool: <span class="prize-pool">Rs. 200</span></span>
-                    </div>
-                    <div class="room-info">
-                        <span>Slots: 5/8 Joined</span>
-                        <span>Table: 9 Ball</span>
-                    </div>
-                    <button class="btn-play" onclick="joinRoom('8 Ball Pool #303', 25, 200)">Join Room & Pay Stake</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- MULTIMEDIA TAB (Songs & Movies) -->
-        <div id="mediaTab" class="tab-content">
-            <div class="card searchable-item">
-                <h3>🎵 Himalayan Folk Song - Audio Player</h3>
-                <audio controls>
-                    <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
-                    Your browser does not support audio playback.
-                </audio>
-            </div>
-
-            <div class="card searchable-item">
-                <h3>🎬 Action Movie Trailer - Video Stream</h3>
-                <div class="media-player">
-                    <video controls>
-                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                        Your browser does not support video playback.
-                    </video>
-                </div>
-            </div>
-        </div>
-
-        <!-- BOSS AI TAB -->
-        <div id="aiTab" class="tab-content">
-            <div class="card">
-                <h3>👑 Supreme Boss AI Guard</h3>
-                <p>AI automated moderation system managing fair-play, anti-cheat, and transaction verification.</p>
-                <input type="text" class="search-box" placeholder="Ask AI moderator or report issue..." style="margin-top: 10px;">
-                <button class="btn-action active" style="width: 100%; padding: 10px;" onclick="alert('Boss AI Guard: System secure, all nodes operational!')">Execute AI Command</button>
-            </div>
-        </div>
-
-        <!-- COMMUNITY CHAT TAB -->
-        <div id="communityTab" class="tab-content">
-            <div class="card searchable-item">
-                <h3>💬 Global Community Chat</h3>
-                <p>Connect with players, discuss strategies, and share winning screenshots.</p>
-                <div style="margin-top: 10px;">
-                    <input type="text" class="search-box" id="chatInput" placeholder="Type message to community...">
-                    <button class="btn-action active" style="width: 100%; padding: 8px;" onclick="sendCommunityMessage()">Send Message</button>
-                </div>
-                <div id="chatMessages" style="margin-top: 12px; font-size: 13px; color: #cbd5e1; max-height: 150px; overflow-y: auto;">
-                    <p style="margin: 5px 0;"><b>GamerrX:</b> Won room #101! GG everyone.</p>
-                    <p style="margin: 5px 0;"><b>HimalayaBoss:</b> Welcome to tournament season!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation Bar -->
+    <!-- Navigation -->
     <nav>
-        <button onclick="switchTab('homeTab', event)" class="active">🏠 Home</button>
-        <button onclick="switchTab('gamingTab', event)">🎮 Gaming</button>
-        <button onclick="switchTab('mediaTab', event)">🎵 Media</button>
-        <button onclick="switchTab('aiTab', event)">🤖 AI</button>
-        <button onclick="switchTab('communityTab', event)">💬 Chat</button>
+        <button class="active" onclick="switchTab('home')">🏠 होम</button>
+        <button onclick="switchTab('anime')">🎬 एनीमे</button>
+        <button onclick="switchTab('games')">🎮 ई-स्पोर्ट्स</button>
+        <button onclick="switchTab('editor')">✨ AI स्टूडियो</button>
+        <button onclick="switchTab('memes')">🔥 मीम्स</button>
+        <button onclick="switchTab('ai')">🤖 सुपर AI</button>
     </nav>
 
+    <!-- Content Sections -->
+    <div class="content">
+        <!-- Home Section -->
+        <div id="home" class="section active">
+            <div class="card" id="welcomeBanner">
+                <h3>स्वागत है Himalaya Play में!</h3>
+                <p style="color: var(--text-muted); margin-top: 5px; font-size: 14px;">नेपाल और दुनिया का ऑल-इन-वन सुपर ऐप।</p>
+            </div>
+            <div class="card">
+                <h4>🔴 लाइव गेमिंग & म्यूजिक</h4>
+                <p style="font-size: 13px; color: var(--text-muted); margin: 5px 0;">Free Fire Pro League Final & Nepali Hits Live.</p>
+                <button class="btn" style="margin-top: 10px;">देखना शुरू करें</button>
+            </div>
+        </div>
+
+        <!-- Anime Section -->
+        <div id="anime" class="section">
+            <div class="card">
+                <h3>🎬 Anime & Movie Hub</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">प्रीमियम जापानी एनीमे और फिल्में।</p>
+                <div style="background: #1f293d; padding: 12px; border-radius: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <span>Naruto Shippuden (Ep 1-500)</span>
+                    <span style="color: var(--accent-color); font-size: 12px;">VIP Pass</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Games Section -->
+        <div id="games" class="section">
+            <div class="card">
+                <h3>🎮 ई-स्पोर्ट्स टूर्नामेंट</h3>
+                <p id="gameFeeInfo" style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Free Fire / PUBG Custom Room (Entry Fee: रु 50)</p>
+                <button class="btn" style="margin-top: 10px;">टूर्नामेंट जॉइन करें</button>
+            </div>
+        </div>
+
+        <!-- AI Photo & Video Editor Section (New Feature) -->
+        <div id="editor" class="section">
+            <div class="card">
+                <h3>✨ AI Studio & Media Editor</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">फोटो रीटच करें और रील्स/वीडियो पर कूल इफेक्ट्स लगाएं।</p>
+                
+                <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 10px;">
+                    <div style="background: #1f293d; padding: 12px; border-radius: 8px; border: 1px dashed var(--accent-color); text-align: center;">
+                        <p style="font-size: 13px; color: var(--accent-color);">📸 फोटो अपलोड करें (AI Remini Enhance)</p>
+                        <button class="btn" style="margin-top: 8px; padding: 6px 14px; font-size: 12px;" onclick="alert('📸 फोटो एन्हांस हो रही है! HD रिजल्ट तैयार है।')">Enhance Photo</button>
+                    </div>
+
+                    <div style="background: #1f293d; padding: 12px; border-radius: 8px; border: 1px dashed var(--secondary-accent); text-align: center;">
+                        <p style="font-size: 13px; color: var(--secondary-accent);">🎬 शार्ट वीडियो / रील्स एडिटर (CapCut Style)</p>
+                        <button class="btn" style="margin-top: 8px; padding: 6px 14px; font-size: 12px;" onclick="alert('✨ वीडियो पर Cyberpunk Glow और Slow-Mo इफ़ेक्ट जुड़ गया!')">Apply Cool Effects</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memes & Shorts Section -->
+        <div id="memes" class="section">
+            <div class="card">
+                <h3>🔥 वायरल मीम्स & शॉर्ट्स</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">युवाओं के लिए स्पेशल वायरल फीड।</p>
+            </div>
+        </div>
+
+        <!-- AI Chat Section -->
+        <div id="ai" class="section" style="height: 100%;">
+            <div class="chat-box">
+                <div class="chat-messages" id="chatLogs">
+                    <div class="msg ai">नमस्ते! मैं आपका सुपर AI हूँ। बताइए मैं आपकी क्या मदद कर सकता हूँ?</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="userInput" placeholder="AI से पूछें या टाइप करें: Open to Deepak@013...">
+                    <button class="btn" onclick="sendMsg()">भेजें</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Modal for Boss AI -->
+    <div id="passwordModal">
+        <div class="modal-box">
+            <h3 style="color: var(--accent-color);">🔒 Boss AI Authentication</h3>
+            <p style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">मालिक, अपना पासवर्ड दर्ज करें:</p>
+            <input type="password" id="adminPassInput" placeholder="Deepak@013">
+            <br>
+            <button class="btn" onclick="verifyAdminPassword()">लॉगिन करें</button>
+            <button onclick="closeModal()" style="background: none; border: none; color: var(--text-muted); margin-top: 10px; cursor: pointer;">रद्द करें</button>
+        </div>
+    </div>
+
+    <!-- Boss Admin Panel -->
+    <div id="bossPanel">
+        <div class="admin-header">
+            <h2>👑 Boss Admin Panel (Deepak Control)</h2>
+            <button onclick="closeBossPanel()" style="background: var(--danger); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer;">बंद करें</button>
+        </div>
+        <div class="card">
+            <div class="form-group">
+                <label>ऐप का नाम बदलें:</label>
+                <input type="text" id="newAppName" value="Himalaya Play">
+            </div>
+            <div class="form-group">
+                <label>गेम एंट्री फीस अपडेट करें:</label>
+                <input type="text" id="newGameFee" value="रु 50">
+            </div>
+            <button class="btn" onclick="saveSettings()">सेटिंग्स सेव करें</button>
+        </div>
+    </div>
+
     <script>
-        let currentUser = null;
-
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
-        }
-        function loginUser(method) {
-            currentUser = method;
-            document.getElementById('userProfileBtn').innerText = '✅ ' + method.split(' ')[0];
-            closeLoginModal();
-            alert('Successfully logged in via ' + method + '!');
+        function selectAnime(charName, greetingText) {
+            document.getElementById('animeWelcomeModal').style.display = 'none';
+            document.getElementById('welcomeBanner').innerHTML = `
+                <h3>👋 Welcome! (${charName} is with you)</h3>
+                <p style="color: var(--accent-color); margin-top: 5px; font-size: 14px; font-style: italic;">"${greetingText}"</p>
+            `;
         }
 
-        // Tab Switching
-        function switchTab(tabId, evt) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+        function switchTab(tabId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            evt.currentTarget.classList.add('active');
+            event.currentTarget.classList.add('active');
         }
 
-        // Search Filter
-        function filterContent() {
-            let input = document.getElementById('searchInput').value.toLowerCase();
-            let cards = document.querySelectorAll('.searchable-item');
-            cards.forEach(card => {
-                let text = card.innerText.toLowerCase();
-                card.style.display = text.includes(input) ? '' : 'none';
-            });
-        }
+        function sendMsg() {
+            let input = document.getElementById('userInput');
+            let text = input.value.trim();
+            if(!text) return;
 
-        // Gaming Room Join
-        function joinRoom(roomName, fee, prize) {
-            if(!currentUser) {
-                alert('Please login first using Google, Facebook or Phone OTP to join tournament rooms!');
-                openLoginModal();
-                return;
-            }
-            let confirmJoin = confirm(`Join "${roomName}"?\nEntry Stake: Rs. ${fee}\nWin Prize Pool: Rs. ${prize}`);
-            if(confirmJoin) {
-                alert(`Successfully joined ${roomName}!\nRs. ${fee} deducted from wallet. Good luck! 🏆`);
-            }
-        }
-
-        // Community Chat
-        function sendCommunityMessage() {
-            let input = document.getElementById('chatInput');
-            if(input.value.trim() === '') return;
-            if(!currentUser) {
-                alert('Please login first to chat in the community!');
-                openLoginModal();
-                return;
-            }
-            let chatBox = document.getElementById('chatMessages');
-            let p = document.createElement('p');
-            p.style.margin = '5px 0';
-            p.innerHTML = `<b>You:</b> ${input.value}`;
-            chatBox.prepend(p);
+            let logs = document.getElementById('chatLogs');
+            logs.innerHTML += `<div class="msg user">${text}</div>`;
             input.value = '';
+            logs.scrollTop = logs.scrollHeight;
+
+            // Check Secret Admin Command
+            if(text.toLowerCase().includes("open to deepak@013, boss ai is available")) {
+                setTimeout(() => {
+                    logs.innerHTML += `<div class="msg ai">⚡ Boss AI Activated! मालिक, कृपया अपनी पहचान के लिए पासवर्ड दर्ज करें।</div>`;
+                    logs.scrollTop = logs.scrollHeight;
+                    document.getElementById('passwordModal').style.display = 'flex';
+                }, 500);
+                return;
+            }
+
+            // Normal AI Reply
+            setTimeout(() => {
+                logs.innerHTML += `<div class="msg ai">मैंने आपकी बात समझ ली है! हिमालय प्ले ऐप पर फोटो एडिटिंग और वीडियो टूल्स एकदम बढ़िया चल रहे हैं।</div>`;
+                logs.scrollTop = logs.scrollHeight;
+            }, 600);
         }
 
-        // Engagement Toggles
-        function toggleLike(btn) {
-            let countSpan = btn.querySelector('.like-count');
-            let count = parseInt(countSpan.innerText);
-            if(btn.classList.contains('active')) {
-                btn.classList.remove('active');
-                countSpan.innerText = count - 1;
+        function closeModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
+
+        function verifyAdminPassword() {
+            let pass = document.getElementById('adminPassInput').value;
+            if(pass === "Deepak@013") {
+                document.getElementById('passwordModal').style.display = 'none';
+                document.getElementById('bossPanel').style.display = 'block';
+                document.getElementById('adminPassInput').value = '';
             } else {
-                btn.classList.add('active');
-                countSpan.innerText = count + 1;
+                alert("गलत पासवर्ड! मालिक का पासवर्ड 'Deepak@013' है।");
             }
         }
-        function toggleFollow(btn) {
-            btn.innerText = btn.innerText.includes('Following') ? '➕ Follow' : '✓ Following';
-            btn.classList.toggle('active');
+
+        function closeBossPanel() {
+            document.getElementById('bossPanel').style.display = 'none';
         }
-        function toggleSubscribe(btn) {
-            btn.innerText = btn.innerText.includes('Subscribed') ? '🔔 Subscribe' : '✓ Subscribed';
-            btn.classList.toggle('active');
+
+        function saveSettings() {
+            let name = document.getElementById('newAppName').value;
+            let fee = document.getElementById('newGameFee').value;
+
+            document.getElementById('appTitle').innerText = name;
+            document.getElementById('gameFeeInfo').innerText = `Free Fire / PUBG Custom Room (Entry Fee: ${fee})`;
+            
+            alert("✅ सेटिंग्स सफलतापूर्वक अपडेट हो गई हैं, मालिक!");
+            closeBossPanel();
         }
     </script>
 </body>
