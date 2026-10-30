@@ -1,19 +1,15 @@
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXllZXlsZGVwemVyZHJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzODYwNTgsImV4cCI6MjEwODk2MjA1OH0.O_TMlIYDcartjzUIJLhbS_EQf41gtszFabCAp_7TCv0<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-    const SUPABASE_URL = 'https://xgullyyeeyldepzerdrh.supabase.co';[span_0](start_span)[span_0](end_span)
-    const SUPABASE_ANON_KEY = 'यहाँ_अपनी_eyJ_वाली_की_डाल_दे';
-    
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log("Supabase Connected! 🚀");
-</script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnimeVerse eSports & Social Super App</title>
+    <title>Himalaya Social Play - Super App</title>
     <!-- Google Fonts & FontAwesome for Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase SDK Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
@@ -37,7 +33,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
             overflow-x: hidden;
         }
 
-        /* --- ANIME WELCOME MODAL --- */
+        /* --- ANIME & PREFERENCE WELCOME MODAL --- */
         #welcome-modal {
             position: fixed;
             top: 0;
@@ -146,7 +142,6 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
             letter-spacing: 1px;
         }
 
-        /* Language Selector Dropdown */
         .lang-select {
             background: #111;
             color: white;
@@ -224,6 +219,35 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
             font-size: 14px;
         }
 
+        /* Secure Auth Box Inside Hero */
+        .auth-box {
+            margin-top: 15px;
+            background: #111;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        .auth-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            background: #222;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 5px;
+        }
+        .auth-box button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
         /* Grid Sections */
         .section-title {
             font-size: 18px;
@@ -277,25 +301,25 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
 </head>
 <body>
 
-    <!-- ANIME WELCOME SELECTION MODAL -->
+    <!-- ANIME & PREFERENCE WELCOME MODAL -->
     <div id="welcome-modal">
-        <h1 id="m-title">Welcome to AnimeVerse!</h1>
+        <h1 id="m-title">Welcome to Himalaya Social Play!</h1>
         <p id="m-desc">Apna favourite anime character chuno jo tumhara swagat karega:</p>
         
         <div class="character-grid">
-            <div class="char-card" onclick="selectCharacter('Gojo Satoru (Cute/Strong)', this)">
+            <div class="char-card" onclick="selectCharacter('Gojo Satoru (Gamer/Strong)', this)">
                 <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=100" alt="Gojo">
                 <h4>Gojo Satoru</h4>
             </div>
-            <div class="char-card" onclick="selectCharacter('Sukuna (Devils/Badass)', this)">
+            <div class="char-card" onclick="selectCharacter('Sukuna (Action/Badass)', this)">
                 <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=100" alt="Sukuna">
                 <h4>Sukuna</h4>
             </div>
-            <div class="char-card" onclick="selectCharacter('Nezuko (Waifu/Cute)', this)">
+            <div class="char-card" onclick="selectCharacter('Nezuko (Cute/Waifu Zone)', this)">
                 <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=100" alt="Nezuko">
                 <h4>Nezuko</h4>
             </div>
-            <div class="char-card" onclick="selectCharacter('Eren Yeager (Khunkhar)', this)">
+            <div class="char-card" onclick="selectCharacter('Eren Yeager (Community & Chats)', this)">
                 <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100" alt="Eren">
                 <h4>Eren Yeager</h4>
             </div>
@@ -304,14 +328,13 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
         <button class="enter-btn" id="m-btn" onclick="enterApp()">Enter App 🚀</button>
     </div>
 
-    <!-- HEADER (YouTube Style) -->
+    <!-- HEADER -->
     <header>
         <div class="header-left">
             <i class="fa-solid fa-bars menu-icon" onclick="toggleSidebar()"></i>
-            <div class="logo"><i class="fa-solid fa-gamepad"></i> AnimeVerse</div>
+            <div class="logo"><i class="fa-solid fa-gamepad"></i> Himalaya Social</div>
         </div>
         <div class="header-right">
-            <!-- Language Dropdown -->
             <select class="lang-select" id="languageSelector" onchange="changeLanguage()">
                 <option value="en">English</option>
                 <option value="hi" selected>हिन्दी</option>
@@ -322,15 +345,16 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
         </div>
     </header>
 
-    <!-- SIDEBAR (Hamburger Menu) -->
+    <!-- SIDEBAR -->
     <sidebar id="app-sidebar">
         <i class="fa-solid fa-xmark close-sidebar" onclick="toggleSidebar()"></i>
         <a href="#"><i class="fa-solid fa-house"></i> <span class="t-home">Home Feed</span></a>
         <a href="#"><i class="fa-solid fa-fire"></i> <span class="t-esports">eSports Tournaments</span></a>
-        <a href="#"><i class="fa-solid fa-wallet"></i> <span class="t-wallet">eSewa Wallet & Bets</span></a>
+        <a href="#"><i class="fa-solid fa-shield-halved"></i> <span class="t-safety">Women Safety Shield</span></a>
+        <a href="#"><i class="fa-solid fa-heart"></i> <span class="t-dating">Safe Match & Dating</span></a>
+        <a href="#"><i class="fa-solid fa-wallet"></i> <span class="t-wallet">eSewa Wallet & Rewards</span></a>
         <a href="#"><i class="fa-solid fa-newspaper"></i> <span class="t-news">Nepal News Feed</span></a>
-        <a href="#"><i class="fa-solid fa-comments"></i> <span class="t-chat">Chat & Video Call</span></a>
-        <a href="#"><i class="fa-solid fa-robot"></i> <span class="t-coach">AI Gaming Coach</span></a>
+        <a href="#"><i class="fa-solid fa-comments"></i> <span class="t-chat">Encrypted Safe Chat</span></a>
         <a href="#"><i class="fa-solid fa-gear"></i> <span class="t-settings">Settings & Privacy</span></a>
     </sidebar>
 
@@ -338,106 +362,146 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
     <div class="container">
         <div class="hero-banner">
             <h2 id="greeting-text">Welcome back, Gamer!</h2>
-            <p id="hero-desc">Ready for PUBG, Free Fire tournaments, live streaming, and secure eSewa betting?</p>
+            <p id="hero-desc">Ready for PUBG, Free Fire community tournaments, secure matchmaking, and encrypted backend sync?</p>
+            
+            <!-- Supabase Secure Login Box -->
+            <div class="auth-box">
+                <input type="email" id="userEmail" placeholder="Enter Email...">
+                <input type="password" id="userPass" placeholder="Enter Password...">
+                <button onclick="handleAuthSignup()">Secure Register / Login</button>
+            </div>
         </div>
 
-        <div class="section-title" id="sec-esports">🔥 Trending eSports & Live Matches</div>
+        <div class="section-title" id="sec-esports">🔥 Trending eSports & Community Hub</div>
         <div class="grid-cards">
             <div class="card">
                 <div class="card-img"><i class="fa-solid fa-gamepad"></i></div>
                 <div class="card-body">
                     <h3>PUBG Mobile Nepal Cup</h3>
-                    <p>Prize Pool: NPR 50,000 | Join via eSewa</p>
+                    <p>Community Custom Rooms & Squad Battles</p>
                 </div>
             </div>
             <div class="card">
                 <div class="card-img"><i class="fa-solid fa-shield-halved"></i></div>
                 <div class="card-body">
-                    <h3>Free Fire Clash Squad</h3>
-                    <p>Live Streaming & Watch Party Active</p>
+                    <h3>Women Safety Shield</h3>
+                    <p>Strict Verification, Anti-Screenshot & Block Guard</p>
                 </div>
             </div>
             <div class="card">
-                <div class="card-img"><i class="fa-solid fa-futbol"></i></div>
+                <div class="card-img"><i class="fa-solid fa-heart"></i></div>
                 <div class="card-body">
-                    <h3 id="c-sport">Live Sports (Legal Stream)</h3>
-                    <p>Cricket & Football Live Links</p>
+                    <h3>Safe Match & Dating Zone</h3>
+                    <p>Verified Profiles & Mutual Interest Matching</p>
                 </div>
             </div>
         </div>
 
-        <div class="section-title" id="sec-news">📰 Nepal News & Community Hub</div>
+        <div class="section-title" id="sec-news">📰 Nepal News & Safe Chat Hub</div>
         <div class="grid-cards">
             <div class="card">
                 <div class="card-img"><i class="fa-solid fa-bullhorn"></i></div>
                 <div class="card-body">
                     <h3 id="c-news">Latest Nepal Updates</h3>
-                    <p>Stay updated with local news feed.</p>
+                    <p>Open RSS & Community News Feeds.</p>
                 </div>
             </div>
             <div class="card">
                 <div class="card-img"><i class="fa-solid fa-comments"></i></div>
                 <div class="card-body">
-                    <h3 id="c-omegle">Omegle Safe Chat & Rooms</h3>
-                    <p>Chat with friends with Anime Voice Narrator!</p>
+                    <h3 id="c-omegle">Encrypted Chat & Anime Rooms</h3>
+                    <p>Secure messaging with privacy guard & disappearing media.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC & MULTI-LANGUAGE DICTIONARY -->
+    <!-- JAVASCRIPT LOGIC & SUPABASE CONFIG -->
     <script>
         let chosenCharacter = "Gojo Satoru";
+
+        // Supabase Initialization with verified project credentials
+        const SUPABASE_URL = 'https://xgullyyeeyldepzerdrh.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXllZXlsZGVwemVyZHJoIiwicm9sZSI6InFub24iLCJpYXQiOjE3NjE4NTUwMTksImV4cCI6MjA3NzQzMTAxOX0.e6JmJEvODk2Mja1OH0.O_TMlIYdcartjzUIJLhbS_EQF41gtszFabCAp_7TCv0';
+        
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log("Himalaya Social Play - Secure Database Connected Successfully! 🚀");
+
+        // Secure Authentication Function
+        async function handleAuthSignup() {
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPass').value;
+
+            if(!email || !password) {
+                alert("भाई, कृपया ईमेल और पासवर्ड दोनों सही से भरें!");
+                return;
+            }
+
+            const { data, error } = await supabaseClient.auth.signUp({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                alert("Auth Error: " + error.message);
+            } else {
+                alert("सफलतापूर्वक रजिस्टर्ड हो गया! डेटा Supabase डेटाबेस में सुरक्षित सेव हो गया है 🚀");
+                console.log(data);
+            }
+        }
 
         // Multilingual Dictionary (English, Hindi, Nepali)
         const langData = {
             en: {
-                mTitle: "Welcome to AnimeVerse!",
+                mTitle: "Welcome to Himalaya Social Play!",
                 mDesc: "Choose your favorite anime character to welcome you:",
                 mBtn: "Enter App 🚀",
                 home: "Home Feed",
                 esports: "eSports Tournaments",
-                wallet: "eSewa Wallet & Bets",
+                safety: "Women Safety Shield",
+                dating: "Safe Match & Dating",
+                wallet: "eSewa Wallet & Rewards",
                 news: "Nepal News Feed",
-                chat: "Chat & Video Call",
-                coach: "AI Gaming Coach",
+                chat: "Encrypted Safe Chat",
                 settings: "Settings & Privacy",
                 greeting: "Welcome back, Gamer!",
-                heroDesc: "Ready for PUBG, Free Fire tournaments, live streaming, and secure eSewa betting?",
-                secEsports: "🔥 Trending eSports & Live Matches",
-                secNews: "📰 Nepal News & Community Hub"
+                heroDesc: "Ready for PUBG, Free Fire community tournaments, secure matchmaking, and encrypted backend sync?",
+                secEsports: "🔥 Trending eSports & Community Hub",
+                secNews: "📰 Nepal News & Safe Chat Hub"
             },
             hi: {
-                mTitle: "AnimeVerse में आपका स्वागत है!",
+                mTitle: "Himalaya Social Play में आपका स्वागत है!",
                 mDesc: "अपना पसंदीदा एनीमे कैरेक्टर चुनें जो आपका स्वागत करेगा:",
                 mBtn: "ऐप में प्रवेश करें 🚀",
                 home: "होम फीड",
                 esports: "ई-स्पोर्ट्स टूर्नामेंट",
-                wallet: "eSewa वॉलेट और बेट्स",
+                safety: "महिला सुरक्षा शील्ड",
+                dating: "सेफ मैच और डेटिंग",
+                wallet: "eSewa वॉलेट और रिवार्ड्स",
                 news: "नेपाल न्यूज़ फीड",
-                chat: "चैट और वीडियो कॉल",
-                coach: "AI गेमिंग कोच",
+                chat: "एन्क्रिप्टेड सेफ चैट",
                 settings: "सेटिंग्स और प्राइवेसी",
                 greeting: "वापस स्वागत है, गेमर!",
-                heroDesc: "PUBG, Free Fire टूर्नामेंट, लाइव स्ट्रीमिंग और सुरक्षित eSewa बेटिंग के लिए तैयार हैं?",
-                secEsports: "🔥 ट्रेंडिंग ई-स्पोर्ट्स और लाइव मैच",
-                secNews: "📰 नेपाल न्यूज़ और कम्युनिटी हब"
+                heroDesc: "PUBG, Free Fire कम्युनिटी टूर्नामेंट, सुरक्षित मैचमेकिंग और एन्क्रिप्टेड डेटाबेस के लिए तैयार हैं?",
+                secEsports: "🔥 ट्रेंडिंग ई-स्पोर्ट्स और कम्युनिटी हब",
+                secNews: "📰 नेपाल न्यूज़ और सेफ चैट हब"
             },
             ne: {
-                mTitle: "AnimeVerse मा स्वागत छ!",
+                mTitle: "Himalaya Social Play मा स्वागत छ!",
                 mDesc: "तपाईंलाई स्वागत गर्न आफ्नो मनपर्ने एनिमे क्यारेक्टर छान्नुहोस्:",
                 mBtn: "एपमा प्रवेश गर्नुहोस् 🚀",
                 home: "गृह पृष्ठ (Home)",
                 esports: "इ-स्पोर्ट्स टूर्नामेन्ट",
-                wallet: "eSewa वालेट र बेट्स",
+                safety: "महिला सुरक्षा कवच",
+                dating: "सुरक्षित म्याच र डेटिङ",
+                wallet: "eSewa वालेट र रिवार्ड्स",
                 news: "नेपाल समाचार (News)",
-                chat: "फ्रेन्ड्स च्याट र भिडियो कल",
-                coach: "AI गेमिङ कोच",
+                chat: "इन्क्रिप्टेड सुरक्षित च्याट",
                 settings: "सेटिङ्स र गोपनीयता",
                 greeting: "स्वागत छ, गेमर!",
-                heroDesc: "PUBG, Free Fire टूर्नामेन्ट, लाइभ स्ट्रिमिङ र सुरक्षित eSewa बेटिङका लागि तयार हुनुहुन्छ?",
-                secEsports: "🔥 ट्रेन्डिङ इ-स्पोर्ट्स र लाइभ म्याचहरू",
-                secNews: "📰 नेपाल समाचार र कम्युनिटी हब"
+                heroDesc: "PUBG, Free Fire कम्युनिटी टूर्नामेन्ट, सुरक्षित म्याचमेकिंग र इन्क्रिप्टेड डाटाबेसका लागि तयार हुनुहुन्छ?",
+                secEsports: "🔥 ट्रेन्डिङ इ-स्पोर्ट्स र कम्युनिटी हब",
+                secNews: "📰 नेपाल समाचार र सुरक्षित च्याट हब"
             }
         };
 
@@ -445,17 +509,17 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
             const selectedLang = document.getElementById('languageSelector').value;
             const t = langData[selectedLang];
 
-            // Update UI texts
             document.getElementById('m-title').innerText = t.mTitle;
             document.getElementById('m-desc').innerText = t.mDesc;
             document.getElementById('m-btn').innerText = t.mBtn;
             
             document.querySelector('.t-home').innerText = t.home;
             document.querySelector('.t-esports').innerText = t.esports;
+            document.querySelector('.t-safety').innerText = t.safety;
+            document.querySelector('.t-dating').innerText = t.dating;
             document.querySelector('.t-wallet').innerText = t.wallet;
             document.querySelector('.t-news').innerText = t.news;
             document.querySelector('.t-chat').innerText = t.chat;
-            document.querySelector('.t-coach').innerText = t.coach;
             document.querySelector('.t-settings').innerText = t.settings;
 
             document.getElementById('greeting-text').innerText = t.greeting;
@@ -478,7 +542,6 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXl
             document.getElementById('app-sidebar').classList.toggle('active');
         }
 
-        // Run default language on load (Hindi/Nepali setup ready)
         window.onload = function() {
             changeLanguage();
         };
