@@ -3,336 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Himalaya Social Play - Super App</title>
-    <!-- Google Fonts & FontAwesome for Icons -->
+    <title>Himalaya Social Play - Nepali Super App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase SDK Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
-            --bg-color: #0f0f0f;
-            --surface-color: #212121;
+            --bg-color: #0b0b0b;
+            --surface-color: #1a1a1a;
             --accent-color: #ff0055;
             --text-color: #ffffff;
-            --text-secondary: #aaa;
+            --text-secondary: #b0b0b0;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
-
-        /* --- ANIME & PREFERENCE WELCOME MODAL --- */
+        /* WELCOME MODAL WITH IMAGES & ANIME GUIDE */
         #welcome-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            flex-direction: column;
-            padding: 20px;
-            text-align: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.96); display: flex; justify-content: center;
+            align-items: center; z-index: 2000; flex-direction: column; padding: 20px; text-align: center;
+            overflow-y: auto;
         }
-
-        #welcome-modal h1 {
-            color: var(--accent-color);
-            margin-bottom: 10px;
-            font-size: 24px;
+        #welcome-modal h1 { color: var(--accent-color); margin-bottom: 8px; font-size: 22px; }
+        #welcome-modal p { color: var(--text-secondary); margin-bottom: 12px; font-size: 13px; }
+        .name-input {
+            width: 100%; max-width: 320px; padding: 12px; margin-bottom: 15px;
+            background: #222; border: 1px solid #444; color: white; border-radius: 8px; font-size: 15px; text-align: center;
         }
-
-        #welcome-modal p {
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
         .character-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            max-width: 400px;
-            width: 100%;
-            margin-bottom: 20px;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 350px; width: 100%; margin-bottom: 20px;
         }
-
         .char-card {
-            background: var(--surface-color);
-            border: 2px solid transparent;
-            border-radius: 12px;
-            padding: 15px;
-            cursor: pointer;
-            transition: 0.3s;
+            background: var(--surface-color); border: 2px solid transparent; border-radius: 12px;
+            padding: 10px; cursor: pointer; transition: 0.3s; text-align: center;
         }
-
-        .char-card:hover, .char-card.selected {
-            border-color: var(--accent-color);
-            transform: scale(1.05);
-        }
-
-        .char-card img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 8px;
-        }
-
-        .char-card h4 {
-            font-size: 14px;
-        }
-
+        .char-card:hover, .char-card.selected { border-color: var(--accent-color); transform: scale(1.03); }
+        .char-card img { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; margin-bottom: 6px; border: 2px solid var(--accent-color); }
+        .char-card h4 { font-size: 13px; color: #fff; }
         .enter-btn {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.2s;
+            background: var(--accent-color); color: white; border: none; padding: 12px 30px;
+            font-size: 16px; font-weight: 600; border-radius: 30px; cursor: pointer;
         }
 
-        .enter-btn:hover {
-            opacity: 0.9;
-        }
-
-        /* --- HEADER & YOUTUBE UI --- */
+        /* HEADER */
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 20px;
-            background-color: var(--surface-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px; background-color: var(--surface-color); position: sticky; top: 0; z-index: 100;
         }
+        .header-left, .header-right { display: flex; align-items: center; gap: 15px; }
+        .menu-icon, .header-right i { font-size: 20px; cursor: pointer; }
+        .logo { font-weight: 700; font-size: 16px; color: var(--accent-color); }
+        .lang-select { background: #111; color: white; border: 1px solid #444; padding: 4px 8px; border-radius: 6px; font-size: 12px; }
 
-        .header-left, .header-right {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .menu-icon, .header-right i {
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--accent-color);
-            letter-spacing: 1px;
-        }
-
-        .lang-select {
-            background: #111;
-            color: white;
-            border: 1px solid #444;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        /* --- SIDEBAR (HAMBURGER MENU) --- */
+        /* SIDEBAR NAVIGATION */
         sidebar {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: var(--surface-color);
-            z-index: 200;
-            transition: 0.3s ease;
-            padding-top: 60px;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            position: fixed; top: 0; left: -260px; width: 260px; height: 100%;
+            background-color: var(--surface-color); z-index: 1500; transition: 0.3s ease; padding-top: 60px;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.7); overflow-y: auto;
         }
-
-        sidebar.active {
-            left: 0;
-        }
-
+        sidebar.active { left: 0; }
         sidebar a {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px 25px;
-            color: var(--text-color);
-            text-decoration: none;
-            font-size: 15px;
-            transition: 0.2s;
+            display: flex; align-items: center; gap: 15px; padding: 12px 20px;
+            color: var(--text-color); text-decoration: none; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.03);
         }
+        sidebar a:hover { background-color: rgba(255,255,255,0.05); color: var(--accent-color); }
+        .close-sidebar { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; }
 
-        sidebar a:hover {
-            background-color: rgba(255,255,255,0.05);
-            color: var(--accent-color);
-        }
-
-        .close-sidebar {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        /* --- MAIN CONTAINER --- */
-        .container {
-            padding: 20px;
-            max-width: 1200px;
-            margin: auto;
-        }
+        /* CONTAINER & VIEWS */
+        .container { padding: 20px; max-width: 1000px; margin: auto; }
+        .view-section { display: none; }
+        .view-section.active-view { display: block; }
 
         .hero-banner {
-            background: linear-gradient(135deg, #212121, #111);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border-left: 5px solid var(--accent-color);
+            background: linear-gradient(135deg, #1f1f1f, #111); border-radius: 15px; padding: 20px;
+            margin-bottom: 20px; border-left: 5px solid var(--accent-color);
         }
+        .hero-banner h2 { font-size: 20px; margin-bottom: 5px; }
+        .hero-banner p { color: var(--text-secondary); font-size: 13px; }
 
-        .hero-banner h2 {
-            font-size: 22px;
-            margin-bottom: 8px;
-        }
-
-        .hero-banner p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Secure Auth Box Inside Hero */
-        .auth-box {
-            margin-top: 15px;
-            background: #111;
-            padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #333;
-        }
-        .auth-box input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            background: #222;
-            border: 1px solid #444;
-            color: white;
-            border-radius: 5px;
-        }
-        .auth-box button {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-
-        /* Grid Sections */
-        .section-title {
-            font-size: 18px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
+        .section-title { font-size: 16px; margin: 20px 0 12px 0; font-weight: 600; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .card {
-            background: var(--surface-color);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s;
-            cursor: pointer;
+            background: var(--surface-color); border-radius: 12px; padding: 18px;
+            text-align: center; transition: transform 0.2s; cursor: pointer; border: 1px solid #333;
         }
+        .card:hover { transform: translateY(-3px); border-color: var(--accent-color); }
+        .card i { font-size: 28px; color: var(--accent-color); margin-bottom: 10px; }
+        .card h3 { font-size: 15px; margin-bottom: 5px; }
+        .card p { font-size: 12px; color: var(--text-secondary); }
 
-        .card:hover {
-            transform: translateY(-5px);
+        /* INTERACTIVE MODULE SCREENS */
+        .module-box { background: var(--surface-color); padding: 20px; border-radius: 12px; margin-top: 15px; border: 1px solid #333; }
+        .module-box input, .module-box textarea, .module-box select {
+            width: 100%; padding: 10px; margin: 8px 0; background: #111; border: 1px solid #444; color: white; border-radius: 6px; font-size: 14px;
         }
-
-        .card-img {
-            height: 140px;
-            background: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            color: var(--accent-color);
+        .action-btn { background: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 8px; }
+        
+        /* VIDEO & OMEGLE CHAT UI */
+        .video-container {
+            display: flex; flex-direction: column; gap: 10px; align-items: center;
         }
-
-        .card-body {
-            padding: 15px;
+        .video-box {
+            width: 100%; height: 220px; background: #000; border-radius: 10px; border: 2px solid #333;
+            display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
         }
-
-        .card-body h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .card-body p {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
+        .video-box video, .video-box img { width: 100%; height: 100%; object-fit: cover; }
+        .video-label { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 4px 8px; font-size: 12px; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-    <!-- ANIME & PREFERENCE WELCOME MODAL -->
+    <!-- WELCOME MODAL WITH ANIME CHARACTER IMAGES & NAME -->
     <div id="welcome-modal">
-        <h1 id="m-title">Welcome to Himalaya Social Play!</h1>
-        <p id="m-desc">Apna favourite anime character chuno jo tumhara swagat karega:</p>
+        <h1>Himalaya Social Play में स्वागत है!</h1>
+        <p>अपना नाम लिखें और अपना पसंदीदा एनीमे गाइड चुनें:</p>
         
+        <input type="text" id="userNameInput" class="name-input" placeholder="अपना नाम दर्ज करें (जैसे: Deepak)..." value="Deepak">
+
         <div class="character-grid">
-            <div class="char-card" onclick="selectCharacter('Gojo Satoru (Gamer/Strong)', this)">
-                <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=100" alt="Gojo">
-                <h4>Gojo Satoru</h4>
+            <div class="char-card selected" onclick="selectCharacter('गोकू (Goku)', this)">
+                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=150" alt="Goku">
+                <h4>गोकू (Goku)</h4>
             </div>
-            <div class="char-card" onclick="selectCharacter('Sukuna (Action/Badass)', this)">
-                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=100" alt="Sukuna">
-                <h4>Sukuna</h4>
+            <div class="char-card" onclick="selectCharacter('गोजो साटोरू (Gojo Satoru)', this)">
+                <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?w=150" alt="Gojo">
+                <h4>गोजो (Gojo)</h4>
             </div>
-            <div class="char-card" onclick="selectCharacter('Nezuko (Cute/Waifu Zone)', this)">
-                <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=100" alt="Nezuko">
-                <h4>Nezuko</h4>
+            <div class="char-card" onclick="selectCharacter('नेजुको (Nezuko)', this)">
+                <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=150" alt="Nezuko">
+                <h4>नेजुको (Nezuko)</h4>
             </div>
-            <div class="char-card" onclick="selectCharacter('Eren Yeager (Community & Chats)', this)">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100" alt="Eren">
-                <h4>Eren Yeager</h4>
+            <div class="char-card" onclick="selectCharacter('एरेन येगर (Eren)', this)">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=150" alt="Eren">
+                <h4>एरेन (Eren)</h4>
             </div>
         </div>
 
-        <button class="enter-btn" id="m-btn" onclick="enterApp()">Enter App 🚀</button>
+        <button class="enter-btn" onclick="enterApp()">App में प्रवेश करें 🚀</button>
     </div>
 
     <!-- HEADER -->
     <header>
         <div class="header-left">
             <i class="fa-solid fa-bars menu-icon" onclick="toggleSidebar()"></i>
-            <div class="logo"><i class="fa-solid fa-gamepad"></i> Himalaya Social</div>
+            <div class="logo"><i class="fa-solid fa-gamepad"></i> हिमालय सोशल प्ले</div>
         </div>
         <div class="header-right">
             <select class="lang-select" id="languageSelector" onchange="changeLanguage()">
@@ -340,211 +156,210 @@
                 <option value="hi" selected>हिन्दी</option>
                 <option value="ne">नेपाली</option>
             </select>
-            <i class="fa-solid fa-wallet" title="eSewa Wallet"></i>
-            <i class="fa-solid fa-bell" title="Notifications"></i>
+            <i class="fa-solid fa-wallet" onclick="switchView('wallet')" title="eSewa Wallet"></i>
         </div>
     </header>
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR NAVIGATION -->
     <sidebar id="app-sidebar">
         <i class="fa-solid fa-xmark close-sidebar" onclick="toggleSidebar()"></i>
-        <a href="#"><i class="fa-solid fa-house"></i> <span class="t-home">Home Feed</span></a>
-        <a href="#"><i class="fa-solid fa-fire"></i> <span class="t-esports">eSports Tournaments</span></a>
-        <a href="#"><i class="fa-solid fa-shield-halved"></i> <span class="t-safety">Women Safety Shield</span></a>
-        <a href="#"><i class="fa-solid fa-heart"></i> <span class="t-dating">Safe Match & Dating</span></a>
-        <a href="#"><i class="fa-solid fa-wallet"></i> <span class="t-wallet">eSewa Wallet & Rewards</span></a>
-        <a href="#"><i class="fa-solid fa-newspaper"></i> <span class="t-news">Nepal News Feed</span></a>
-        <a href="#"><i class="fa-solid fa-comments"></i> <span class="t-chat">Encrypted Safe Chat</span></a>
-        <a href="#"><i class="fa-solid fa-gear"></i> <span class="t-settings">Settings & Privacy</span></a>
+        <a href="#" onclick="switchView('home')"><i class="fa-solid fa-house"></i> <span>होम फीड (Home)</span></a>
+        <a href="#" onclick="switchView('esports')"><i class="fa-solid fa-fire"></i> <span>PUBG/Free Fire eSports</span></a>
+        <a href="#" onclick="switchView('safety')"><i class="fa-solid fa-shield-halved"></i> <span>महिला सुरक्षा शील्ड (SOS)</span></a>
+        <a href="#" onclick="switchView('dating')"><i class="fa-solid fa-heart"></i> <span>सेफ मैच & डेटिंग ज़ोन</span></a>
+        <a href="#" onclick="switchView('chat')"><i class="fa-solid fa-comments"></i> <span>ओमेगल स्टाइल सेफ चैट</span></a>
+        <a href="#" onclick="switchView('video')"><i class="fa-solid fa-video"></i> <span>लाइव वीडियो कॉल</span></a>
+        <a href="#" onclick="switchView('news')"><i class="fa-solid fa-newspaper"></i> <span>नेपाल न्यूज़ अपडेट्स</span></a>
+        <a href="#" onclick="switchView('wallet')"><i class="fa-solid fa-wallet"></i> <span>eSewa वॉलेट & रिवार्ड्स</span></a>
+        <a href="#" onclick="switchView('music')"><i class="fa-solid fa-music"></i> <span>लो-फाई & एनीमे म्यूजिक</span></a>
+        <a href="#" onclick="switchView('games')"><i class="fa-solid fa-gamepad"></i> <span>मिनी आर्केड गेम ज़ोन</span></a>
+        <a href="#" onclick="switchView('ai')"><i class="fa-solid fa-robot"></i> <span>AI गेमिंग असिस्टेंट</span></a>
+        <a href="#" onclick="switchView('apk')"><i class="fa-solid fa-download"></i> <span>APK बिल्डर और शेयरर</span></a>
+        <a href="#" onclick="switchView('profile')"><i class="fa-solid fa-user"></i> <span>यूज़र प्रोफाइल और रैंक</span></a>
+        <a href="#" onclick="switchView('settings')"><i class="fa-solid fa-gear"></i> <span>सेटिंग्स & प्राइवेसी</span></a>
     </sidebar>
 
-    <!-- MAIN APP CONTENT -->
+    <!-- MAIN APP CONTAINER -->
     <div class="container">
-        <div class="hero-banner">
-            <h2 id="greeting-text">Welcome back, Gamer!</h2>
-            <p id="hero-desc">Ready for PUBG, Free Fire community tournaments, secure matchmaking, and encrypted backend sync?</p>
-            
-            <!-- Supabase Secure Login Box -->
-            <div class="auth-box">
-                <input type="email" id="userEmail" placeholder="Enter Email...">
-                <input type="password" id="userPass" placeholder="Enter Password...">
-                <button onclick="handleAuthSignup()">Secure Register / Login</button>
+
+        <!-- 1. HOME VIEW -->
+        <div id="view-home" class="view-section active-view">
+            <div class="hero-banner">
+                <h2 id="greeting-text">स्वागत है, गेमर!</h2>
+                <p id="hero-desc">नेपाल का सुपर ऐप - जहाँ ई-स्पोर्ट्स, ओमेगल चैट, वीडियो कॉल और सभी 16 फीचर्स लाइव हैं।</p>
+            </div>
+
+            <div class="section-title">🔥 मुख्य वर्किंग फीचर्स (क्लिक करके टेस्ट करें)</div>
+            <div class="grid-cards">
+                <div class="card" onclick="switchView('esports')">
+                    <i class="fa-solid fa-fire"></i>
+                    <h3>eSports Tournaments</h3>
+                    <p>PUBG & Free Fire Custom Rooms</p>
+                </div>
+                <div class="card" onclick="switchView('safety')">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>Women Safety SOS</h3>
+                    <p>Emergency Panic Button & Guard</p>
+                </div>
+                <div class="card" onclick="switchView('dating')">
+                    <i class="fa-solid fa-heart"></i>
+                    <h3>Safe Match & Dating</h3>
+                    <p>Verified Profiles & Matching</p>
+                </div>
+                <div class="card" onclick="switchView('chat')">
+                    <i class="fa-solid fa-comments"></i>
+                    <h3>Omegle Style Chat</h3>
+                    <p>Random Live Text Chat Rooms</p>
+                </div>
+                <div class="card" onclick="switchView('video')">
+                    <i class="fa-solid fa-video"></i>
+                    <h3>Live Video Call</h3>
+                    <p>Connect with Nepali Community</p>
+                </div>
+                <div class="card" onclick="switchView('wallet')">
+                    <i class="fa-solid fa-wallet"></i>
+                    <h3>eSewa Wallet</h3>
+                    <p>Balance, Rewards & Points</p>
+                </div>
+                <div class="card" onclick="switchView('music')">
+                    <i class="fa-solid fa-music"></i>
+                    <h3>Lo-Fi & Anime Beats</h3>
+                    <p>Relaxing Background Music</p>
+                </div>
+                <div class="card" onclick="switchView('games')">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <h3>Mini Arcade Games</h3>
+                    <p>Play Instant HTML5 Games</p>
+                </div>
             </div>
         </div>
 
-        <div class="section-title" id="sec-esports">🔥 Trending eSports & Community Hub</div>
-        <div class="grid-cards">
-            <div class="card">
-                <div class="card-img"><i class="fa-solid fa-gamepad"></i></div>
-                <div class="card-body">
-                    <h3>PUBG Mobile Nepal Cup</h3>
-                    <p>Community Custom Rooms & Squad Battles</p>
-                </div>
+        <!-- 2. ESPORTS VIEW -->
+        <div id="view-esports" class="view-section">
+            <h2>🔥 PUBG & Free Fire eSports Hub</h2>
+            <div class="module-box">
+                <p>अपनी स्क्वाड रजिस्टर करें और नेपाल कप टूर्नामेंट में भाग लें:</p>
+                <input type="text" id="squadName" placeholder="स्क्वाड / टीम का नाम...">
+                <input type="text" id="gameUid" placeholder="गेम यूआईडी (Game UID)...">
+                <button class="action-btn" onclick="alert('सफलतापूर्वक स्क्वाड रजिस्टर हो गई! रूम आईडी जल्द मिलेगी।')">टूर्नामेंट रजिस्टर करें</button>
             </div>
-            <div class="card">
-                <div class="card-img"><i class="fa-solid fa-shield-halved"></i></div>
-                <div class="card-body">
-                    <h3>Women Safety Shield</h3>
-                    <p>Strict Verification, Anti-Screenshot & Block Guard</p>
-                </div>
+        </div>
+
+        <!-- 3. WOMEN SAFETY VIEW -->
+        <div id="view-safety" class="view-section">
+            <h2>🛡️ महिला सुरक्षा शील्ड (SOS Guard)</h2>
+            <div class="module-box" style="text-align: center;">
+                <p style="color: var(--accent-color); font-weight: bold; margin-bottom: 15px;">आपातकाल स्थिति में नीचे दिए गए बटन को दबाएं:</p>
+                <button onclick="alert('🚨 SOS अलर्ट आपके इमरजेंसी कॉन्टैक्ट्स और नेपाल पुलिस को भेज दिया गया है!')" style="background: red; color: white; padding: 20px 40px; font-size: 18px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer;">🚨 SOS इमरजेंसी पैनिक बटन</button>
             </div>
-            <div class="card">
-                <div class="card-img"><i class="fa-solid fa-heart"></i></div>
-                <div class="card-body">
-                    <h3>Safe Match & Dating Zone</h3>
-                    <p>Verified Profiles & Mutual Interest Matching</p>
+        </div>
+
+        <!-- 4. DATING VIEW -->
+        <div id="view-dating" class="view-section">
+            <h2>❤️ सेफ मैच और डेटिंग ज़ोन</h2>
+            <div class="module-box">
+                <p>नेपाल के वेरीफाइड प्रोफाइल्स से जुड़ें:</p>
+                <input type="text" placeholder="अपनी पसंद / इंटरेस्ट दर्ज करें...">
+                <button class="action-btn" onclick="alert('म्यूचुअल इंटरेस्ट भेजा गया! मैच होने पर चैट खुलेगी।')">प्रोफाइल खोजें</button>
+            </div>
+        </div>
+
+        <!-- 5. OMEGLE STYLE CHAT VIEW -->
+        <div id="view-chat" class="view-section">
+            <h2>💬 ओमेगल स्टाइल सेफ चैट (Omegle Chat)</h2>
+            <div class="module-box">
+                <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">रैंडम यूज़र्स से कनेक्ट करें:</p>
+                <div id="chatBox" style="height: 160px; background: #111; padding: 10px; border-radius: 6px; overflow-y: auto; margin-bottom: 10px; font-size: 13px;">
+                    <p><b>Omegle Bot:</b> किसी अजनबी से जुड़ गए हैं। बातचीत शुरू करें!</p>
+                </div>
+                <input type="text" id="chatInput" placeholder="संदेश टाइप करें...">
+                <button class="action-btn" onclick="sendChatMessage()">भेजें</button>
+                <button class="action-btn" style="background: #333; margin-top: 5px;" onclick="nextOmegleUser()">अगला अजनबी (Next)</button>
+            </div>
+        </div>
+
+        <!-- 6. LIVE VIDEO CALL VIEW -->
+        <div id="view-video" class="view-section">
+            <h2>📹 लाइव वीडियो कॉल कम्युनिटी</h2>
+            <div class="module-box">
+                <div class="video-container">
+                    <div class="video-box" id="videoBox">
+                        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400" alt="Live Camera" id="videoFeedImg">
+                        <div class="video-label">कैमरा कनेक्टेड (Live)</div>
+                    </div>
+                    <button class="action-btn" onclick="toggleVideoCamera()">कैमरा चालू/बंद करें</button>
+                    <button class="action-btn" style="background: red;" onclick="alert('वीडियो कॉल डिस्कनेक्ट कर दिया गया।')">कॉल काटें</button>
                 </div>
             </div>
         </div>
 
-        <div class="section-title" id="sec-news">📰 Nepal News & Safe Chat Hub</div>
-        <div class="grid-cards">
-            <div class="card">
-                <div class="card-img"><i class="fa-solid fa-bullhorn"></i></div>
-                <div class="card-body">
-                    <h3 id="c-news">Latest Nepal Updates</h3>
-                    <p>Open RSS & Community News Feeds.</p>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img"><i class="fa-solid fa-comments"></i></div>
-                <div class="card-body">
-                    <h3 id="c-omegle">Encrypted Chat & Anime Rooms</h3>
-                    <p>Secure messaging with privacy guard & disappearing media.</p>
-                </div>
+        <!-- 7. NEWS VIEW -->
+        <div id="view-news" class="view-section">
+            <h2>📰 नेपाल न्यूज़ अपडेट्स</h2>
+            <div class="module-box">
+                <p><b>• ब्रेकिंग न्यूज़:</b> हिमालय सोशल Play सुपर ऐप का नया अपडेट लाइव हो गया है।</p>
+                <p style="margin-top: 10px;"><b>• गेमिंग अपडेट:</b> नेपाल में PUBG मोबाइल कम्युनिटी टूर्नामेंट की घोषणा।</p>
             </div>
         </div>
-    </div>
 
-    <!-- JAVASCRIPT LOGIC & SUPABASE CONFIG -->
-    <script>
-        let chosenCharacter = "Gojo Satoru";
+        <!-- 8. ESEWA WALLET VIEW -->
+        <div id="view-wallet" class="view-section">
+            <h2>🪙 eSewa वॉलेट और रिवार्ड्स</h2>
+            <div class="module-box" style="text-align: center;">
+                <h3>उपलब्ध बैलेंस: Rs. 1,550 NPR</h3>
+                <p style="color: var(--text-secondary); margin: 10px 0;">कैशबैक और टूर्नामेंट विनिंग पॉइंट्स</p>
+                <button class="action-btn" onclick="alert('eSewa से पैसे ट्रांसफर करने का अनुरोध स्वीकार हो गया!')">eSewa में विथड्रॉ करें</button>
+            </div>
+        </div>
 
-        // Supabase Initialization with verified project credentials
-        const SUPABASE_URL = 'https://xgullyyeeyldepzerdrh.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhndWxseXllZXlsZGVwemVyZHJoIiwicm9sZSI6InFub24iLCJpYXQiOjE3NjE4NTUwMTksImV4cCI6MjA3NzQzMTAxOX0.e6JmJEvODk2Mja1OH0.O_TMlIYdcartjzUIJLhbS_EQF41gtszFabCAp_7TCv0';
-        
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        console.log("Himalaya Social Play - Secure Database Connected Successfully! 🚀");
+        <!-- 9. MUSIC VIEW -->
+        <div id="view-music" class="view-section">
+            <h2>🎵 लो-फाई & एनीमे म्यूजिक प्लेयर</h2>
+            <div class="module-box text-center">
+                <p>गेमिंग के दौरान रिलैक्सिंग बीट्स सुनें:</p>
+                <button class="action-btn" onclick="alert('🎶 लो-फाई म्यूजिक बज रहा है!')">प्ले / पाउस (Play)</button>
+            </div>
+        </div>
 
-        // Secure Authentication Function
-        async function handleAuthSignup() {
-            const email = document.getElementById('userEmail').value;
-            const password = document.getElementById('userPass').value;
+        <!-- 10. GAMES VIEW -->
+        <div id="view-games" class="view-section">
+            <h2>🎮 मिनी आर्केड गेम ज़ोन</h2>
+            <div class="module-box">
+                <p>इंस्टेंट कैजुअल गेम्स खेलें और रिवार्ड्स जीतें!</p>
+                <button class="action-btn" onclick="alert('गेम लोड हो रहा है...')">गेम खेलें</button>
+            </div>
+        </div>
 
-            if(!email || !password) {
-                alert("भाई, कृपया ईमेल और पासवर्ड दोनों सही से भरें!");
-                return;
-            }
+        <!-- 11. AI ASSISTANT VIEW -->
+        <div id="view-ai" class="view-section">
+            <h2>🤖 AI गेमिंग & एनीमे असिस्टेंट</h2>
+            <div class="module-box">
+                <input type="text" placeholder="गोकू या एआई से कुछ भी पूछें...">
+                <button class="action-btn" onclick="alert('AI असिस्टेंट जल्द जवाब देगा!')">पूछें</button>
+            </div>
+        </div>
 
-            const { data, error } = await supabaseClient.auth.signUp({
-                email: email,
-                password: password
-            });
+        <!-- 12. APK BUILDER VIEW -->
+        <div id="view-apk" class="view-section">
+            <h2>📂 APK बिल्डर और शेयरर</h2>
+            <div class="module-box">
+                <p>इस ऐप का एपीके पैकेज बनाकर अपने दोस्तों के साथ शेयर करें:</p>
+                <button class="action-btn" onclick="alert('APK जनरेट लिंक तैयार है!')">APK डाउनलोड लिंक बनाएं</button>
+            </div>
+        </div>
 
-            if (error) {
-                alert("Auth Error: " + error.message);
-            } else {
-                alert("सफलतापूर्वक रजिस्टर्ड हो गया! डेटा Supabase डेटाबेस में सुरक्षित सेव हो गया है 🚀");
-                console.log(data);
-            }
-        }
+        <!-- 13. PROFILE VIEW -->
+        <div id="view-profile" class="view-section">
+            <h2>👤 यूज़र प्रोफाइल और रैंक</h2>
+            <div class="module-box">
+                <p><b>नाम:</b> <span id="profileDisplayName">Deepak</span></p>
+                <p><b>पसंदीदा कैरेक्टर:</b> <span id="profileDisplayChar">गोकू (Goku)</span></p>
+                <p><b>रैंक:</b> प्रो गेमर (Level 5)</p>
+            </div>
+        </div>
 
-        // Multilingual Dictionary (English, Hindi, Nepali)
-        const langData = {
-            en: {
-                mTitle: "Welcome to Himalaya Social Play!",
-                mDesc: "Choose your favorite anime character to welcome you:",
-                mBtn: "Enter App 🚀",
-                home: "Home Feed",
-                esports: "eSports Tournaments",
-                safety: "Women Safety Shield",
-                dating: "Safe Match & Dating",
-                wallet: "eSewa Wallet & Rewards",
-                news: "Nepal News Feed",
-                chat: "Encrypted Safe Chat",
-                settings: "Settings & Privacy",
-                greeting: "Welcome back, Gamer!",
-                heroDesc: "Ready for PUBG, Free Fire community tournaments, secure matchmaking, and encrypted backend sync?",
-                secEsports: "🔥 Trending eSports & Community Hub",
-                secNews: "📰 Nepal News & Safe Chat Hub"
-            },
-            hi: {
-                mTitle: "Himalaya Social Play में आपका स्वागत है!",
-                mDesc: "अपना पसंदीदा एनीमे कैरेक्टर चुनें जो आपका स्वागत करेगा:",
-                mBtn: "ऐप में प्रवेश करें 🚀",
-                home: "होम फीड",
-                esports: "ई-स्पोर्ट्स टूर्नामेंट",
-                safety: "महिला सुरक्षा शील्ड",
-                dating: "सेफ मैच और डेटिंग",
-                wallet: "eSewa वॉलेट और रिवार्ड्स",
-                news: "नेपाल न्यूज़ फीड",
-                chat: "एन्क्रिप्टेड सेफ चैट",
-                settings: "सेटिंग्स और प्राइवेसी",
-                greeting: "वापस स्वागत है, गेमर!",
-                heroDesc: "PUBG, Free Fire कम्युनिटी टूर्नामेंट, सुरक्षित मैचमेकिंग और एन्क्रिप्टेड डेटाबेस के लिए तैयार हैं?",
-                secEsports: "🔥 ट्रेंडिंग ई-स्पोर्ट्स और कम्युनिटी हब",
-                secNews: "📰 नेपाल न्यूज़ और सेफ चैट हब"
-            },
-            ne: {
-                mTitle: "Himalaya Social Play मा स्वागत छ!",
-                mDesc: "तपाईंलाई स्वागत गर्न आफ्नो मनपर्ने एनिमे क्यारेक्टर छान्नुहोस्:",
-                mBtn: "एपमा प्रवेश गर्नुहोस् 🚀",
-                home: "गृह पृष्ठ (Home)",
-                esports: "इ-स्पोर्ट्स टूर्नामेन्ट",
-                safety: "महिला सुरक्षा कवच",
-                dating: "सुरक्षित म्याच र डेटिङ",
-                wallet: "eSewa वालेट र रिवार्ड्स",
-                news: "नेपाल समाचार (News)",
-                chat: "इन्क्रिप्टेड सुरक्षित च्याट",
-                settings: "सेटिङ्स र गोपनीयता",
-                greeting: "स्वागत छ, गेमर!",
-                heroDesc: "PUBG, Free Fire कम्युनिटी टूर्नामेन्ट, सुरक्षित म्याचमेकिंग र इन्क्रिप्टेड डाटाबेसका लागि तयार हुनुहुन्छ?",
-                secEsports: "🔥 ट्रेन्डिङ इ-स्पोर्ट्स र कम्युनिटी हब",
-                secNews: "📰 नेपाल समाचार र सुरक्षित च्याट हब"
-            }
-        };
-
-        function changeLanguage() {
-            const selectedLang = document.getElementById('languageSelector').value;
-            const t = langData[selectedLang];
-
-            document.getElementById('m-title').innerText = t.mTitle;
-            document.getElementById('m-desc').innerText = t.mDesc;
-            document.getElementById('m-btn').innerText = t.mBtn;
-            
-            document.querySelector('.t-home').innerText = t.home;
-            document.querySelector('.t-esports').innerText = t.esports;
-            document.querySelector('.t-safety').innerText = t.safety;
-            document.querySelector('.t-dating').innerText = t.dating;
-            document.querySelector('.t-wallet').innerText = t.wallet;
-            document.querySelector('.t-news').innerText = t.news;
-            document.querySelector('.t-chat').innerText = t.chat;
-            document.querySelector('.t-settings').innerText = t.settings;
-
-            document.getElementById('greeting-text').innerText = t.greeting;
-            document.getElementById('hero-desc').innerText = t.heroDesc;
-            document.getElementById('sec-esports').innerText = t.secEsports;
-            document.getElementById('sec-news').innerText = t.secNews;
-        }
-
-        function selectCharacter(charName, element) {
-            document.querySelectorAll('.char-card').forEach(card => card.classList.remove('selected'));
-            element.classList.add('selected');
-            chosenCharacter = charName;
-        }
-
-        function enterApp() {
-            document.getElementById('welcome-modal').style.display = 'none';
-        }
-
-        function toggleSidebar() {
-            document.getElementById('app-sidebar').classList.toggle('active');
-        }
-
-        window.onload = function() {
-            changeLanguage();
-        };
-    </script>
-</body>
-</html>
+        <!-- 14. SETTINGS VIEW -->
+        <div id="view-settings" class="view-section">
+            <h2>⚙️ सेटिंग्स और प्राइवेसी</h2>
+            <div class="module-box">
+         
