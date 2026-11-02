@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Himalaya Social Play - Nepali Super App</title>
+    <title>Himalaya Social Play - Super App</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
@@ -19,7 +18,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-        /* WELCOME MODAL WITH IMAGES & ANIME GUIDE */
+        /* स्वागत मोडल स्क्रीन */
         #welcome-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.96); display: flex; justify-content: center;
@@ -47,7 +46,7 @@
             font-size: 16px; font-weight: 600; border-radius: 30px; cursor: pointer;
         }
 
-        /* HEADER */
+        /* हेडर */
         header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 12px 20px; background-color: var(--surface-color); position: sticky; top: 0; z-index: 100;
@@ -57,7 +56,7 @@
         .logo { font-weight: 700; font-size: 16px; color: var(--accent-color); }
         .lang-select { background: #111; color: white; border: 1px solid #444; padding: 4px 8px; border-radius: 6px; font-size: 12px; }
 
-        /* SIDEBAR NAVIGATION */
+        /* साइडबार नेविगेशन */
         sidebar {
             position: fixed; top: 0; left: -260px; width: 260px; height: 100%;
             background-color: var(--surface-color); z-index: 1500; transition: 0.3s ease; padding-top: 60px;
@@ -71,7 +70,7 @@
         sidebar a:hover { background-color: rgba(255,255,255,0.05); color: var(--accent-color); }
         .close-sidebar { position: absolute; top: 15px; right: 20px; font-size: 20px; cursor: pointer; }
 
-        /* CONTAINER & VIEWS */
+        /* कंटेनर और व्यूज़ */
         .container { padding: 20px; max-width: 1000px; margin: auto; }
         .view-section { display: none; }
         .view-section.active-view { display: block; }
@@ -94,33 +93,29 @@
         .card h3 { font-size: 15px; margin-bottom: 5px; }
         .card p { font-size: 12px; color: var(--text-secondary); }
 
-        /* INTERACTIVE MODULE SCREENS */
         .module-box { background: var(--surface-color); padding: 20px; border-radius: 12px; margin-top: 15px; border: 1px solid #333; }
         .module-box input, .module-box textarea, .module-box select {
             width: 100%; padding: 10px; margin: 8px 0; background: #111; border: 1px solid #444; color: white; border-radius: 6px; font-size: 14px;
         }
         .action-btn { background: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; margin-top: 8px; }
         
-        /* VIDEO & OMEGLE CHAT UI */
-        .video-container {
-            display: flex; flex-direction: column; gap: 10px; align-items: center;
-        }
+        .video-container { display: flex; flex-direction: column; gap: 10px; align-items: center; }
         .video-box {
             width: 100%; height: 220px; background: #000; border-radius: 10px; border: 2px solid #333;
             display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;
         }
-        .video-box video, .video-box img { width: 100%; height: 100%; object-fit: cover; }
+        .video-box img { width: 100%; height: 100%; object-fit: cover; }
         .video-label { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); padding: 4px 8px; font-size: 12px; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-    <!-- WELCOME MODAL WITH ANIME CHARACTER IMAGES & NAME -->
+    <!-- स्वागत स्क्रीन मोडल -->
     <div id="welcome-modal">
         <h1>Himalaya Social Play में स्वागत है!</h1>
         <p>अपना नाम लिखें और अपना पसंदीदा एनीमे गाइड चुनें:</p>
         
-        <input type="text" id="userNameInput" class="name-input" placeholder="अपना नाम दर्ज करें (जैसे: Deepak)..." value="Deepak">
+        <input type="text" id="userNameInput" class="name-input" placeholder="अपना नाम दर्ज करें..." value="दीपक साह">
 
         <div class="character-grid">
             <div class="char-card selected" onclick="selectCharacter('गोकू (Goku)', this)">
@@ -144,7 +139,7 @@
         <button class="enter-btn" onclick="enterApp()">App में प्रवेश करें 🚀</button>
     </div>
 
-    <!-- HEADER -->
+    <!-- हेडर -->
     <header>
         <div class="header-left">
             <i class="fa-solid fa-bars menu-icon" onclick="toggleSidebar()"></i>
@@ -160,8 +155,8 @@
         </div>
     </header>
 
-    <!-- SIDEBAR NAVIGATION -->
-    <sidebar id="app-sidebar">
+    <!-- साइडबार नेविगेशन -->
+    sidebar id="app-sidebar">
         <i class="fa-solid fa-xmark close-sidebar" onclick="toggleSidebar()"></i>
         <a href="#" onclick="switchView('home')"><i class="fa-solid fa-house"></i> <span>होम फीड (Home)</span></a>
         <a href="#" onclick="switchView('esports')"><i class="fa-solid fa-fire"></i> <span>PUBG/Free Fire eSports</span></a>
@@ -179,13 +174,13 @@
         <a href="#" onclick="switchView('settings')"><i class="fa-solid fa-gear"></i> <span>सेटिंग्स & प्राइवेसी</span></a>
     </sidebar>
 
-    <!-- MAIN APP CONTAINER -->
+    <!-- मुख्य ऐप कंटेनर -->
     <div class="container">
 
-        <!-- 1. HOME VIEW -->
+        <!-- 1. होम व्यू -->
         <div id="view-home" class="view-section active-view">
             <div class="hero-banner">
-                <h2 id="greeting-text">स्वागत है, गेमर!</h2>
+                <h2 id="greeting-text">स्वागत है, दीपक साह!</h2>
                 <p id="hero-desc">नेपाल का सुपर ऐप - जहाँ ई-स्पोर्ट्स, ओमेगल चैट, वीडियो कॉल और सभी 16 फीचर्स लाइव हैं।</p>
             </div>
 
@@ -234,7 +229,7 @@
             </div>
         </div>
 
-        <!-- 2. ESPORTS VIEW -->
+        <!-- 2. ई-स्पोर्ट्स व्यू -->
         <div id="view-esports" class="view-section">
             <h2>🔥 PUBG & Free Fire eSports Hub</h2>
             <div class="module-box">
@@ -245,7 +240,7 @@
             </div>
         </div>
 
-        <!-- 3. WOMEN SAFETY VIEW -->
+        <!-- 3. महिला सुरक्षा SOS व्यू -->
         <div id="view-safety" class="view-section">
             <h2>🛡️ महिला सुरक्षा शील्ड (SOS Guard)</h2>
             <div class="module-box" style="text-align: center;">
@@ -254,7 +249,7 @@
             </div>
         </div>
 
-        <!-- 4. DATING VIEW -->
+        <!-- 4. डेटिंग व्यू -->
         <div id="view-dating" class="view-section">
             <h2>❤️ सेफ मैच और डेटिंग ज़ोन</h2>
             <div class="module-box">
@@ -264,7 +259,7 @@
             </div>
         </div>
 
-        <!-- 5. OMEGLE STYLE CHAT VIEW -->
+        <!-- 5. ओमेगल चैट व्यू -->
         <div id="view-chat" class="view-section">
             <h2>💬 ओमेगल स्टाइल सेफ चैट (Omegle Chat)</h2>
             <div class="module-box">
@@ -278,7 +273,7 @@
             </div>
         </div>
 
-        <!-- 6. LIVE VIDEO CALL VIEW -->
+        <!-- 6. लाइव वीडियो कॉल व्यू -->
         <div id="view-video" class="view-section">
             <h2>📹 लाइव वीडियो कॉल कम्युनिटी</h2>
             <div class="module-box">
@@ -293,7 +288,7 @@
             </div>
         </div>
 
-        <!-- 7. NEWS VIEW -->
+        <!-- 7. न्यूज़ व्यू -->
         <div id="view-news" class="view-section">
             <h2>📰 नेपाल न्यूज़ अपडेट्स</h2>
             <div class="module-box">
@@ -302,7 +297,7 @@
             </div>
         </div>
 
-        <!-- 8. ESEWA WALLET VIEW -->
+        <!-- 8. eSewa वॉलेट व्यू -->
         <div id="view-wallet" class="view-section">
             <h2>🪙 eSewa वॉलेट और रिवार्ड्स</h2>
             <div class="module-box" style="text-align: center;">
@@ -312,7 +307,7 @@
             </div>
         </div>
 
-        <!-- 9. MUSIC VIEW -->
+        <!-- 9. म्यूजिक व्यू -->
         <div id="view-music" class="view-section">
             <h2>🎵 लो-फाई & एनीमे म्यूजिक प्लेयर</h2>
             <div class="module-box text-center">
@@ -321,7 +316,7 @@
             </div>
         </div>
 
-        <!-- 10. GAMES VIEW -->
+        <!-- 10. गेम्स व्यू -->
         <div id="view-games" class="view-section">
             <h2>🎮 मिनी आर्केड गेम ज़ोन</h2>
             <div class="module-box">
@@ -330,7 +325,7 @@
             </div>
         </div>
 
-        <!-- 11. AI ASSISTANT VIEW -->
+        <!-- 11. AI असिस्टेंट व्यू -->
         <div id="view-ai" class="view-section">
             <h2>🤖 AI गेमिंग & एनीमे असिस्टेंट</h2>
             <div class="module-box">
@@ -339,7 +334,7 @@
             </div>
         </div>
 
-        <!-- 12. APK BUILDER VIEW -->
+        <!-- 12. APK बिल्डर व्यू -->
         <div id="view-apk" class="view-section">
             <h2>📂 APK बिल्डर और शेयरर</h2>
             <div class="module-box">
@@ -348,18 +343,30 @@
             </div>
         </div>
 
-        <!-- 13. PROFILE VIEW -->
+        <!-- 13. प्रोफाइल व्यू -->
         <div id="view-profile" class="view-section">
             <h2>👤 यूज़र प्रोफाइल और रैंक</h2>
             <div class="module-box">
-                <p><b>नाम:</b> <span id="profileDisplayName">Deepak</span></p>
+                <p><b>नाम:</b> <span id="profileDisplayName">दीपक साह</span></p>
                 <p><b>पसंदीदा कैरेक्टर:</b> <span id="profileDisplayChar">गोकू (Goku)</span></p>
                 <p><b>रैंक:</b> प्रो गेमर (Level 5)</p>
             </div>
         </div>
 
-        <!-- 14. SETTINGS VIEW -->
+        <!-- 14. सेटिंग व्यू -->
         <div id="view-settings" class="view-section">
             <h2>⚙️ सेटिंग्स और प्राइवेसी</h2>
             <div class="module-box">
-         
+                <p>डार्क मोड: एक्टिव (Active)</p>
+                <p>नोटिफिकेशन: इनेबलड</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- जावास्क्रिप्ट लॉजिक -->
+    <script>
+        let chosenCharacter = "गोकू (Goku)";
+        let userName = "दीपक साह";
+
+        function 
